@@ -4,9 +4,19 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.limelight;
+import frc.robot.Constants.FeatureFlags;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -18,6 +28,11 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+  private List<Double> distanceData = new ArrayList<Double>();
+  private List<Double> poseXData = new ArrayList<Double>();
+  private List<Double> poseYData = new ArrayList<Double>();
+  private List<Double> poseThetaData = new ArrayList<Double>();
+  private final Field2d limelightLocalizationField = new Field2d();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -44,6 +59,7 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+//    this.teleopPeriodic(Constants.VisionConstants.RightConstants.kLimelightNetworkTablesName);
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -81,7 +97,37 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    String networkTablesName = Constants.VisionConstants.RightConstants.kLimelightNetworkTablesName;
+    double[] visionBotPose = limelight.getBotpose_wpiBlue(networkTablesName);
+    if (visionBotPose.length == 0) return;
+
+    double tx = visionBotPose[0];
+    double ty = visionBotPose[1];
+
+    double rx = visionBotPose[3];
+    double ry = visionBotPose[4];
+    double rz = ((visionBotPose[5] + 360) % 360);
+
+    double tl = limelight.getLatency_Pipeline(networkTablesName);
+    Pose2d limelightPose = new Pose2d(new Translation2d(tx, ty), Rotation2d.fromDegrees(rz));
+
+    double[] aprilTagLocation = limelight.getTargetPose_RobotSpace(networkTablesName);
+    if (aprilTagLocation.length == 0) return;
+
+    double aprilTagDistance = new Translation2d(aprilTagLocation[0], aprilTagLocation[2]).getNorm();
+    if (Constants.FeatureFlags.kLocalizationDataCollectionMode) {
+      distanceData.add(aprilTagDistance);
+      poseXData.add(limelightPose.getX());
+      poseYData.add(limelightPose.getY());
+      poseThetaData.add(limelightPose.getRotation().getRadians());
+    }
+
+    limelightLocalizationField.setRobotPose(limelightPose);
+    SmartDashboard.putNumber("Lime Light pose x " + networkTablesName, limelightPose.getX());
+    SmartDashboard.putNumber("Lime Light pose y " + networkTablesName, limelightPose.getY());
+    SmartDashboard.putNumber("Lime Light pose theta", limelightPose.getRotation().getDegrees());
+  }
 
   @Override
   public void testInit() {
@@ -95,9 +141,13 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when the robot is first started up. */
   @Override
-  public void simulationInit() {}
+  public void simulationInit() {
+
+  }
 
   /** This function is called periodically whilst in simulation. */
   @Override
-  public void simulationPeriodic() {}
+  public void simulationPeriodic() {
+
+  }
 }
