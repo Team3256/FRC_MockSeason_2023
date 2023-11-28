@@ -7,10 +7,12 @@
 
 package frc.robot.utils;
 
+import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.hardware.CANcoder;
 import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class CANDeviceTester {
     /**
@@ -47,6 +49,14 @@ public class CANDeviceTester {
         // if (temp == 0)
         // System.out.println("Pigeon " + device.getDeviceID() + " offline");
         // return temp != 0;
+
+        StatusSignal<Integer> output = device.getVersion();
+
+        boolean isPigeonAlive = StatusSignal.isAllGood(output);
+
+        SmartDashboard.putBoolean("IsPigeonAlive", isPigeonAlive);
+
+        return isPigeonAlive;
     }
 
     // /**
