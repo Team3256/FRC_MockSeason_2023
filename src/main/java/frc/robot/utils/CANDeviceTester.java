@@ -83,9 +83,10 @@ public class CANDeviceTester {
      * @return Returns whether the CanCoder is online
      */
     public static boolean testCANCoder(CANcoder device) {
-        double voltage = device.getSupplyVoltage().getValue();
-        if (voltage == 0)
-            System.out.println("CANCoder " + device.getDeviceID() + " offline");
-        return voltage != 0;
+        StatusSignal<Integer> output = device.getVersion();
+        boolean isCANCoderAlive = StatusSignal.isAllGood(output);
+
+        SmartDashboard.putBoolean("IsCANCoderAlive", isCANCoderAlive);
+        return isCANCoderAlive;
     }
 }
