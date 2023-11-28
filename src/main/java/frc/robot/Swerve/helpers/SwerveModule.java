@@ -5,20 +5,22 @@
 // license that can be found in the LICENSE file at
 // the root directory of this project.
 
-package frc.robot.swerve.helpers;
+package frc.robot.Swerve.helpers;
 
 import static frc.robot.Constants.ShuffleboardConstants.kElectricalTabName;
-import static frc.robot.swerve.SwerveConstants.*;
+import static frc.robot.Swerve.SwerveConstants.*;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.ctre.phoenix.sensors.WPI_CANCoder;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.signals.ControlModeValue;
+
+import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.hardware.CANcoder;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
@@ -28,13 +30,13 @@ import frc.robot.logging.Loggable;
 
 public class SwerveModule implements Loggable {
   public int moduleNumber;
-  private WPI_TalonFX mAngleMotor;
-  private WPI_TalonFX mDriveMotor;
-  private WPI_CANCoder angleEncoder;
+  private TalonFX mAngleMotor;
+  private TalonFX mDriveMotor;
+  private CANcoder angleEncoder;
   private Rotation2d angleOffset;
   private Rotation2d lastAngle;
 
-  private CTREConfigs ctreConfigs = new CTREConfigs();
+  private TalonFXConfiguration TalonFXConfigs = new TalonFXConfiguration();
 
   SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(kDriveKS, kDriveKV, kDriveKA);
 
@@ -43,15 +45,15 @@ public class SwerveModule implements Loggable {
     this.angleOffset = moduleConstants.angleOffset;
 
     /* Angle Encoder Config */
-    angleEncoder = new WPI_CANCoder(moduleConstants.cancoderID);
+    angleEncoder = new CANcoder(moduleConstants.cancoderID);
     configAngleEncoder();
 
     /* Angle Motor Config */
-    mAngleMotor = new WPI_TalonFX(moduleConstants.angleMotorID);
+    mAngleMotor = new TalonFX(moduleConstants.angleMotorID);
     configAngleMotor();
 
     /* Drive Motor Config */
-    mDriveMotor = new WPI_TalonFX(moduleConstants.driveMotorID);
+    mDriveMotor = new TalonFX(moduleConstants.driveMotorID);
     configDriveMotor();
 
     lastAngle = getState().angle;
@@ -125,11 +127,15 @@ public class SwerveModule implements Loggable {
   }
 
   private void configDriveMotor() {
-    mDriveMotor.configFactoryDefault();
-    mDriveMotor.configAllSettings(ctreConfigs.swerveDriveFXConfig);
+    mDriveMotor.getConfigurator().apply(TalonFXConfigs);
     mDriveMotor.setInverted(kDriveMotorInvert);
-    mDriveMotor.setNeutralMode(kDriveNeutralMode);
-    mDriveMotor.setSelectedSensorPosition(0);
+    mDriveMotor.
+
+//    mDriveMotor.configFactoryDefault();
+//    mDriveMotor.configAllSettings(ctreConfigs.swerveDriveFXConfig);
+//    mDriveMotor.setInverted(kDriveMotorInvert);
+//    mDriveMotor.setNeutralMode(kDriveNeutralMode);
+//    mDriveMotor.setSelectedSensorPosition(0);
   }
 
   public SwerveModuleState getState() {
@@ -159,23 +165,23 @@ public class SwerveModule implements Loggable {
     lastAngle = angle;
   }
 
-  public void setDriveMotorNeutralMode(NeutralMode neutralMode) {
+  public void setDriveMotorNeutralMode(NeutralModeValue neutralMode) {
     mDriveMotor.setNeutralMode(neutralMode);
   }
 
-  public void setAngleMotorNeutralMode(NeutralMode neutralMode) {
+  public void setAngleMotorNeutralMode(NeutralModeValue neutralMode) {
     mAngleMotor.setNeutralMode(neutralMode);
   }
 
-  public WPI_TalonFX getAngleMotor() {
+  public CANcoder getAngleMotor() {
     return mAngleMotor;
   }
 
-  public WPI_TalonFX getDriveMotor() {
+  public CANcoder getDriveMotor() {
     return mDriveMotor;
   }
 
-  public WPI_CANCoder getAngleEncoder() {
+  public CANcoder getAngleEncoder() {
     return angleEncoder;
   }
 
