@@ -10,7 +10,6 @@ package frc.robot.utils;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.hardware.Pigeon2;
-import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.hardware.CANcoder;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -35,11 +34,18 @@ public class CANDeviceTester {
      * @return Returns whether all the TalonFXs are online
      */
     public static boolean testTalonFX(TalonFX device) {
-        // XXX: There's a TalonFX.isAlive method.
-        // Does that also do what we want?
-        boolean output = StatusSignal.isAllGood(device.getVersion());
-        SmartDashboard.putBoolean("Talon device ID: " + device.getDeviceID() + " CAN connected", output);
-        return output;
+        // double temp = device.getTemperature();
+        // if (temp == 0)
+        // System.out.println("TalonFX " + device.getDeviceID() + " offline");
+        // return temp != 0;
+
+        StatusSignal<Integer> outputTalon = device.getVersion();
+
+        boolean isTalonAlive = StatusSignal.isAllGood(outputTalon);
+
+        SmartDashboard.putBoolean("IsTalonAlive", isTalonAlive);
+
+        return isTalonAlive;
     }
 
     /**
@@ -77,9 +83,9 @@ public class CANDeviceTester {
      * @return Returns whether the CanCoder is online
      */
     public static boolean testCANCoder(CANcoder device) {
-        StatusSignal<Integer> version = device.getVersion();
-        if (StatusSignal.isAllGood(version))
+        double voltage = device.getSupplyVoltage().getValue();
+        if (voltage == 0)
             System.out.println("CANCoder " + device.getDeviceID() + " offline");
-        return StatusSignal.isAllGood(version);
+        return voltage != 0;
     }
 }
