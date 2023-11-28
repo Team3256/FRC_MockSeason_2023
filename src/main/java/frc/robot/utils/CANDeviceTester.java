@@ -9,8 +9,10 @@ package frc.robot.utils;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.hardware.Pigeon2;
+import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.hardware.CANcoder;
 import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class CANDeviceTester {
     /**
@@ -32,10 +34,11 @@ public class CANDeviceTester {
      * @return Returns whether all the TalonFXs are online
      */
     public static boolean testTalonFX(TalonFX device) {
-        // double temp = device.getTemperature();
-        // if (temp == 0)
-        // System.out.println("TalonFX " + device.getDeviceID() + " offline");
-        // return temp != 0;
+        // XXX: There's a TalonFX.isAlive method.
+        // Does that also do what we want?
+        boolean output = StatusSignal.isAllGood(device.getVersion());
+        SmartDashboard.putBoolean("Talon device ID: " + device.getDeviceID() + " CAN connected", output);
+        return output;
     }
 
     /**
