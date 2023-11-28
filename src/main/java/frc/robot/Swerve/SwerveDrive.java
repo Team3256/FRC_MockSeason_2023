@@ -10,10 +10,12 @@ package frc.robot.Swerve;
 import static frc.robot.Constants.ShuffleboardConstants.*;
 import static frc.robot.Constants.VisionConstants.*;
 import static frc.robot.Constants.kDebugEnabled;
-import static frc.robot.swerve.SwerveConstants.*;
+import static frc.robot.Swerve.SwerveConstants.*;
 
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.hardware.Pigeon2;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+
 import edu.wpi.first.math.MatBuilder;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.Nat;
@@ -42,13 +44,13 @@ import frc.robot.helpers.StatisticsHelper;
 import frc.robot.limelight.Limelight;
 import frc.robot.logging.DoubleSendable;
 import frc.robot.logging.Loggable;
-import frc.robot.swerve.helpers.AdaptiveSlewRateLimiter;
-import frc.robot.swerve.helpers.SwerveModule;
+import frc.robot.Swerve.helpers.AdaptiveSlewRateLimiter;
+import frc.robot.Swerve.helpers.SwerveModule;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.commons.math3.analysis.interpolation.LinearInterpolator;
-import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
-import org.littletonrobotics.junction.Logger;
+// import org.apache.commons.math3.analysis.interpolation.LinearInterpolator;
+// import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
+// import org.littletonrobotics.junction.Logger;
 
 public class SwerveDrive extends SubsystemBase implements Loggable, CANTestable {
     private final SwerveModule frontLeftModule = new SwerveModule(0, FrontLeft.constants);
@@ -372,13 +374,13 @@ public class SwerveDrive extends SubsystemBase implements Loggable, CANTestable 
         return result;
     }
 
-    public void setDriveMotorsNeutralMode(NeutralMode neutralMode) {
+    public void setDriveMotorsNeutralMode(NeutralModeValue neutralMode) {
         for (SwerveModule swerveModule : swerveModules) {
             swerveModule.setDriveMotorNeutralMode(neutralMode);
         }
     }
 
-    public void setAngleMotorsNeutralMode(NeutralMode neutralMode) {
+    public void setAngleMotorsNeutralMode(NeutralModeValue neutralMode) {
         for (SwerveModule swerveModule : swerveModules) {
             swerveModule.setAngleMotorNeutralMode(neutralMode);
         }
