@@ -7,7 +7,7 @@
 
 package frc.robot.utils;
 
-import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.hardware.CANcoder;
@@ -39,9 +39,9 @@ public class CANDeviceTester {
         // System.out.println("TalonFX " + device.getDeviceID() + " offline");
         // return temp != 0;
 
-        StatusSignal<Integer> outputTalon = device.getVersion();
+        StatusCode outputTalon = device.getVersion().getError();
 
-        boolean isTalonAlive = StatusSignal.isAllGood(outputTalon);
+        boolean isTalonAlive = outputTalon.isOK();
 
         SmartDashboard.putBoolean("IsTalonAlive", isTalonAlive);
 
@@ -58,9 +58,9 @@ public class CANDeviceTester {
         // System.out.println("Pigeon " + device.getDeviceID() + " offline");
         // return temp != 0;
 
-        StatusSignal<Integer> output = device.getVersion();
+        StatusCode output = device.getVersion().getError();
 
-        boolean isPigeonAlive = StatusSignal.isAllGood(output);
+        boolean isPigeonAlive = output.isOK();
 
         SmartDashboard.putBoolean("IsPigeonAlive", isPigeonAlive);
 
@@ -83,8 +83,8 @@ public class CANDeviceTester {
      * @return Returns whether the CanCoder is online
      */
     public static boolean testCANCoder(CANcoder device) {
-        StatusSignal<Integer> output = device.getVersion();
-        boolean isCANCoderAlive = StatusSignal.isAllGood(output);
+        StatusCode output = device.getVersion().getError();
+        boolean isCANCoderAlive = output.isOK();
 
         SmartDashboard.putBoolean("IsCANCoderAlive", isCANCoderAlive);
         return isCANCoderAlive;
