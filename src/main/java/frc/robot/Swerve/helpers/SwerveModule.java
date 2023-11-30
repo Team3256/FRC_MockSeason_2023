@@ -11,8 +11,9 @@ import static frc.robot.Constants.ShuffleboardConstants.kElectricalTabName;
 import static frc.robot.Swerve.SwerveConstants.*;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.signals.ControlModeValue;
+import com.ctre.phoenix6.controls.PositionDutyCycle;
 
+import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.hardware.CANcoder;
@@ -40,6 +41,28 @@ public class SwerveModule implements Loggable {
 
   SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(kDriveKS, kDriveKV, kDriveKA);
 
+  private void setSpeed(SwerveModuleState desiredState, boolean isOpenLoop) {
+    if (isOpenLoop) {
+      double percentOutput = desiredState.speedMetersPerSecond / kMaxSpeed;
+      mDriveMotor.set(percentOutput);
+    } else {
+      double velocity =
+              Conversions.MPSToFalcon(
+                      desiredState.speedMetersPerSecond, kWheelCircumference, kDriveGearRatio);
+      mDriveMotor.set(velocity);
+    }
+  }
+
+  private void setAngle(SwerveModuleState desiredState) {
+    Rotation2d angle =
+            (Math.abs(desiredState.speedMetersPerSecond) <= (kMaxSpeed * 0.01))
+                    ? lastAngle
+                    : desiredState
+                    .angle; // Prevent rotating module if speed is less than 1%. Prevents Jittering.
+
+    mAngleMotor.set(Conversions.degreesToFalcon(angle.getDegrees(), kAngleGearRatio));
+    lastAngle = angle;
+  }
   public SwerveModule(int moduleNumber, SwerveModuleConstants moduleConstants) {
     this.moduleNumber = moduleNumber;
     this.angleOffset = moduleConstants.angleOffset;
@@ -67,34 +90,6 @@ public class SwerveModule implements Loggable {
     desiredState = CTREModuleState.optimize(desiredState, getState().angle);
     setAngle(desiredState);
     setSpeed(desiredState, isOpenLoop);
-  }
-
-  private void setSpeed(SwerveModuleState desiredState, boolean isOpenLoop) {
-    if (isOpenLoop) {
-      double percentOutput = desiredState.speedMetersPerSecond / kMaxSpeed;
-      mDriveMotor.set(ControlMode.PercentOutput, percentOutput);
-    } else {
-      double velocity =
-          Conversions.MPSToFalcon(
-              desiredState.speedMetersPerSecond, kWheelCircumference, kDriveGearRatio);
-      mDriveMotor.set(
-          ControlMode.Velocity,
-          velocity,
-          DemandType.ArbitraryFeedForward,
-          feedforward.calculate(desiredState.speedMetersPerSecond));
-    }
-  }
-
-  private void setAngle(SwerveModuleState desiredState) {
-    Rotation2d angle =
-        (Math.abs(desiredState.speedMetersPerSecond) <= (kMaxSpeed * 0.01))
-            ? lastAngle
-            : desiredState
-                .angle; // Prevent rotating module if speed is less than 1%. Prevents Jittering.
-
-    mAngleMotor.set(
-        ControlMode.Position, Conversions.degreesToFalcon(angle.getDegrees(), kAngleGearRatio));
-    lastAngle = angle;
   }
 
   private Rotation2d getAngle() {
@@ -129,7 +124,6 @@ public class SwerveModule implements Loggable {
   private void configDriveMotor() {
     mDriveMotor.getConfigurator().apply(TalonFXConfigs);
     mDriveMotor.setInverted(kDriveMotorInvert);
-    mDriveMotor.
 
 //    mDriveMotor.configFactoryDefault();
 //    mDriveMotor.configAllSettings(ctreConfigs.swerveDriveFXConfig);
