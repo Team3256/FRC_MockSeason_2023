@@ -65,7 +65,8 @@ public class CANDeviceTester {
 
         boolean isPigeonAlive = output.isOK();
 
-        SmartDashboard.putBoolean("IsPigeonAlive", isPigeonAlive);
+        SmartDashboard.putBoolean(
+            "TalonFX Motor ID " + device.getDeviceID() + " CAN Bus: " + device.getCANBus() + ")", isPigeonAlive);
 
         return isPigeonAlive;
     }
@@ -89,7 +90,8 @@ public class CANDeviceTester {
         StatusCode output = device.getVersion().getError();
         boolean isCANCoderAlive = output.isOK();
 
-        SmartDashboard.putBoolean("IsCANCoderAlive", isCANCoderAlive);
+        SmartDashboard.putBoolean(
+            "TalonFX Motor ID " + device.getDeviceID() + " CAN Bus: " + device.getCANBus() + ")", isCANCoderAlive);
         return isCANCoderAlive;
     }
 }
