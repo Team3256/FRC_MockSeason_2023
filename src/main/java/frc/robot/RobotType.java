@@ -7,8 +7,8 @@
 
 package frc.robot;
 
-import static frc.robot.swerve.SwerveConstants.kAlphaOffsets;
-import static frc.robot.swerve.SwerveConstants.kZiptideOffsets;
+import static frc.robot.subsystems.swerve.swerveConstants.kAlphaOffsets;
+import static frc.robot.subsystems.swerve.swerveConstants.kZiptideOffsets;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 

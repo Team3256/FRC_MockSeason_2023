@@ -5,10 +5,10 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 
 public class SwerveDrive {
-//    public SwerveModule frontLeftModule = new SwerveModule(0, FrontLeft.constants);
-//    public SwerveModule frontRightModule = new SwerveModule(1, FrontRight.constants);
-//    public SwerveModule backLeftModule = new SwerveModule(2, BackLeft.constants);
-//    public SwerveModule backRightModule = new SwerveModule(3, BackRight.constants);
+    public SwerveModule frontLeftModule = new SwerveModule(0, FrontLeft.constants);
+    public SwerveModule frontRightModule = new SwerveModule(1, FrontRight.constants);
+    public SwerveModule backLeftModule = new SwerveModule(2, BackLeft.constants);
+    public SwerveModule backRightModule = new SwerveModule(3, BackRight.constants);
 
     Translation2d kfrontLeftModuleLocation = new Translation2d(1, 1);
 
@@ -28,4 +28,5 @@ public class SwerveDrive {
 
         return moduleStates;
     }
+
 }
