@@ -43,7 +43,10 @@ public class CANDeviceTester {
 
         boolean isTalonAlive = outputTalon.isOK();
 
-        SmartDashboard.putBoolean("IsTalonAlive", isTalonAlive);
+        SmartDashboard.putBoolean(
+                "TalonFX Motor ID " + device.getDeviceID() + " (description: '" + device.getDescription()
+                        + "', CAN Bus: " + device.getCANBus() + ")",
+                isTalonAlive);
 
         return isTalonAlive;
     }
