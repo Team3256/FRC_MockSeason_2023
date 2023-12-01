@@ -1,4 +1,6 @@
 package frc.robot.utils;
-/// Classes that implement this interface can be tested by the CANDeviceTester
+
+/* Basically a type union between TalonFX, Pigeon2, CANcoder, and PowerDistribution
+ */
 public interface CANTestable {
 }

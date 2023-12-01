@@ -23,8 +23,10 @@ public class CANConnectionManager {
         devices.add(device);
     }
 
-    // Output CAN BE NULL!!
-    // Should I use Optional instead?
+    /*
+     * Returns the first broken device in the CAN daisy chain or null if all devices
+     * are online
+     */
     public CANTestable getBrokenDevice() {
         for (CANTestable device : devices) {
             if (device instanceof PowerDistribution) {
