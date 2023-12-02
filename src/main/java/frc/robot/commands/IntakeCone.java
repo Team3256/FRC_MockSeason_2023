@@ -20,10 +20,8 @@ import frc.robot.subsystems.Intake;
 public class IntakeCone {
   private Intake intakeSubsystem = new Intake();
 
-//   private LED ledSubsystem;
-//   private TimedBoolean isCurrentSpiking;
-
-
+  //   private LED ledSubsystem;
+  //   private TimedBoolean isCurrentSpiking;
 
   public IntakeCone(Intake intakeSubsystem) {
     this.intakeSubsystem = intakeSubsystem;
@@ -32,10 +30,7 @@ public class IntakeCone {
     // addRequirements(intakeSubsystem);
   }
 
-
-  public void initalize(){
+  public void initalize() {
     intakeSubsystem.activate();
   }
-
-
 }
