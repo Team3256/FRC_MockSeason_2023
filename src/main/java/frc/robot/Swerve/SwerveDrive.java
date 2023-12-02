@@ -12,9 +12,7 @@ import static frc.robot.Constants.VisionConstants.*;
 import static frc.robot.Constants.kDebugEnabled;
 import static frc.robot.Swerve.SwerveConstants.*;
 
-import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.hardware.Pigeon2;
-import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.math.MatBuilder;
 import edu.wpi.first.math.MathUtil;
@@ -374,13 +372,13 @@ public class SwerveDrive extends SubsystemBase implements Loggable, CANTestable 
         return result;
     }
 
-    public void setDriveMotorsNeutralMode(NeutralModeValue neutralMode) {
+    public void setDriveMotorsNeutralMode(NeutralMode neutralMode) {
         for (SwerveModule swerveModule : swerveModules) {
             swerveModule.setDriveMotorNeutralMode(neutralMode);
         }
     }
 
-    public void setAngleMotorsNeutralMode(NeutralModeValue neutralMode) {
+    public void setAngleMotorsNeutralMode(NeutralMode neutralMode) {
         for (SwerveModule swerveModule : swerveModules) {
             swerveModule.setAngleMotorNeutralMode(neutralMode);
         }

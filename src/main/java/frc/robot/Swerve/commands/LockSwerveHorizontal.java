@@ -5,15 +5,15 @@
 // license that can be found in the LICENSE file at
 // the root directory of this project.
 
-package frc.robot.swerve.commands;
+package frc.robot.Swerve.commands;
 
-import static frc.robot.swerve.SwerveConstants.*;
+import static frc.robot.Swerve.SwerveConstants.*;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.robot.helpers.DebugCommandBase;
-import frc.robot.swerve.SwerveDrive;
+import frc.robot.Swerve.SwerveDrive;
 
 public class LockSwerveHorizontal extends DebugCommandBase {
   private final SwerveDrive swerveSubsystem;

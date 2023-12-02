@@ -5,14 +5,14 @@
 // license that can be found in the LICENSE file at
 // the root directory of this project.
 
-package frc.robot.swerve.commands;
+package frc.robot.Swerve.commands;
 
-import static frc.robot.swerve.SwerveConstants.*;
+import static frc.robot.Swerve.SwerveConstants.*;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.Constants;
 import frc.robot.helpers.DebugCommandBase;
-import frc.robot.swerve.SwerveDrive;
+import frc.robot.Swerve.SwerveDrive;
 import java.util.function.DoubleSupplier;
 
 public class TeleopSwerve extends DebugCommandBase {

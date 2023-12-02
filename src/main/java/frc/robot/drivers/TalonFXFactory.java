@@ -10,6 +10,9 @@ package frc.robot.drivers;
 import com.ctre.phoenix.ParamEnum;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+
+import com.ctre.phoenix6.hardware.TalonFX;
+
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 import com.ctre.phoenix.sensors.SensorVelocityMeasPeriod;
 
@@ -72,22 +75,22 @@ public class TalonFXFactory {
   }
 
   // create a CANTalon with the default (out of the box) configuration
-  public static WPI_TalonFX createDefaultTalon(CanDeviceId id) {
+  public static TalonFX createDefaultTalon(CanDeviceId id) {
     return createTalon(id, kDefaultConfiguration);
   }
 
-  public static WPI_TalonFX createPermanentFollowerTalon(
+  public static TalonFX createPermanentFollowerTalon(
       CanDeviceId followerId, CanDeviceId masterId) {
     if (!followerId.getBus().equals(masterId.getBus())) {
       throw new RuntimeException("Master and Follower Talons must be on the same CAN bus");
     }
-    final WPI_TalonFX talon = createTalon(followerId, kFollowerConfiguration);
+    final TalonFX talon = createTalon(followerId, kFollowerConfiguration);
     talon.set(ControlMode.Follower, masterId.getDeviceNumber());
     return talon;
   }
 
-  public static WPI_TalonFX createTalon(CanDeviceId id, Configuration config) {
-    WPI_TalonFX talon = new LazyTalonFX(id);
+  public static TalonFX createTalon(CanDeviceId id, Configuration config) {
+    TalonFX talon = new LazyTalonFX(id);
     talon.set(ControlMode.PercentOutput, 0.0);
 
     talon.changeMotionControlFramePeriod(config.MOTION_CONTROL_FRAME_PERIOD_MS);

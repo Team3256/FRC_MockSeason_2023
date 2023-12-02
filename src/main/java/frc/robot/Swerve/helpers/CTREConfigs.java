@@ -5,9 +5,9 @@
 // license that can be found in the LICENSE file at
 // the root directory of this project.
 
-package frc.robot.swerve.helpers;
+package frc.robot.Swerve.helpers;
 
-import static frc.robot.swerve.SwerveConstants.*;
+import static frc.robot.Swerve.SwerveConstants.*;
 
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;

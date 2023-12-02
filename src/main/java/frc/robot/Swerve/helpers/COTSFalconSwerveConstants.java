@@ -5,7 +5,7 @@
 // license that can be found in the LICENSE file at
 // the root directory of this project.
 
-package frc.robot.swerve.helpers;
+package frc.robot.Swerve.helpers;
 
 import edu.wpi.first.math.util.Units;
 

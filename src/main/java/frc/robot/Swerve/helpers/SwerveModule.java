@@ -9,9 +9,12 @@ package frc.robot.Swerve.helpers;
 
 import static frc.robot.Constants.ShuffleboardConstants.kElectricalTabName;
 import static frc.robot.Swerve.SwerveConstants.*;
+import frc.robot.Swerve.helpers.CTREModuleState;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.signals.ControlModeValue;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
+
 
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -59,7 +62,6 @@ public class SwerveModule implements Loggable {
                     ? lastAngle
                     : desiredState
                     .angle; // Prevent rotating module if speed is less than 1%. Prevents Jittering.
-
     mAngleMotor.set(Conversions.degreesToFalcon(angle.getDegrees(), kAngleGearRatio));
     lastAngle = angle;
   }
@@ -98,7 +100,7 @@ public class SwerveModule implements Loggable {
   }
 
   public Rotation2d getCanCoder() {
-    return Rotation2d.fromDegrees(angleEncoder.getAbsolutePosition());
+    return Rotation2d.fromDegrees(angleEncoder.getAbsolutePosition().getValue());
   }
 
   public void resetToAbsolute() {
@@ -168,11 +170,13 @@ public class SwerveModule implements Loggable {
   }
 
   public CANcoder getAngleMotor() {
-    return mAngleMotor;
+    CANcoder mAngleMotorC = new CANcoder(mAngleMotor.getDeviceID());
+    return mAngleMotorC;
   }
 
   public CANcoder getDriveMotor() {
-    return mDriveMotor;
+    CANcoder mDriveMotorC = new CANcoder(mDriveMotor.getDeviceID());
+    return mDriveMotorC;
   }
 
   public CANcoder getAngleEncoder() {
