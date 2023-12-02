@@ -9,7 +9,9 @@ package frc.robot.subsystems.swerve;
 
 import static frc.robot.Constants.*;
 
+import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -81,11 +83,11 @@ public final class swerveConstants {
     public static final double kAngleGearRatio = kChosenModule.angleGearRatio;
 
     /* Motor Inverts */
-    public static final boolean kAngleMotorInvert = kChosenModule.angleMotorInvert;
-    public static final boolean kDriveMotorInvert = kChosenModule.driveMotorInvert;
+    public static final InvertedValue kAngleMotorInvert = kChosenModule.angleMotorInvert;
+    public static final InvertedValue kDriveMotorInvert = kChosenModule.driveMotorInvert;
 
     /* Angle Encoder Invert */
-    public static final boolean kCanCoderInvert = kChosenModule.canCoderInvert;
+    public static final SensorDirectionValue kCanCoderInvert = kChosenModule.canCoderInvert;
 
     /* Swerve Current Limiting */
     public static final int kAngleContinuousCurrentLimit = 25;

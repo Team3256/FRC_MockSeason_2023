@@ -3,6 +3,8 @@ package frc.robot.subsystems.swerve;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import frc.robot.subsystems.swerve.helpers.CTREConfigs;
+import frc.robot.subsystems.swerve.helpers.CTREModuleState;
 
 import static frc.robot.subsystems.swerve.swerveConstants.*;
 
@@ -22,7 +24,7 @@ public class SwerveModule {
         SwerveModuleState
         SwerveModuleState swerveModule =
     }
-    ublic void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop) {
+    public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop) {
         /*
          * This is a custom optimize function, since default WPILib optimize assumes
          * continuous controller which CTRE and Rev onboard is not

@@ -18,7 +18,7 @@ public class SwerveDrive {
 
     public SwerveModuleState[] drive(double vx, double vy, double angularVelocity) {
         ChassisSpeeds speeds = new ChassisSpeeds(vx, vy, angularVelocity);
-        SwerveDriveKinematics kinematics = new SwerveDriveKinematics(kfrontLeftModuleLocation, kfrontRightModuleLocation, kbackLeftModuleLocation, kbackRightModuleLocation)
+        SwerveDriveKinematics kinematics = new SwerveDriveKinematics(kfrontLeftModuleLocation, kfrontRightModuleLocation, kbackLeftModuleLocation, kbackRightModuleLocation);
         SwerveModuleState[] moduleStates = kinematics.toSwerveModuleStates(speeds);
 
         SwerveModuleState frontLeftModule = moduleStates[0];
