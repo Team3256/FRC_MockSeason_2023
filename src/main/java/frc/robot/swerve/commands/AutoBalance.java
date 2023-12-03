@@ -5,15 +5,15 @@
 // license that can be found in the LICENSE file at
 // the root directory of this project.
 
-package frc.robot.Swerve.commands;
+package frc.robot.swerve.commands;
 
-import static frc.robot.Swerve.SwerveConstants.kXAutoBalanceVelocity;
+import static frc.robot.swerve.SwerveConstants.kXAutoBalanceVelocity;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.helpers.DebugCommandBase;
 import frc.robot.helpers.TimedBoolean;
-import frc.robot.Swerve.SwerveDrive;
+import frc.robot.swerve.SwerveDrive;
 
 public class AutoBalance extends DebugCommandBase {
   private final SwerveDrive swerveDrive;

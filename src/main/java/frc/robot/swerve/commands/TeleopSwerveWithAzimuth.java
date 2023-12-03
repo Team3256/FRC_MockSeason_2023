@@ -5,16 +5,16 @@
 // license that can be found in the LICENSE file at
 // the root directory of this project.
 
-package frc.robot.Swerve.commands;
+package frc.robot.swerve.commands;
 
 import static frc.robot.Constants.*;
-import static frc.robot.Swerve.SwerveConstants.*;
+import static frc.robot.swerve.SwerveConstants.*;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.helpers.DebugCommandBase;
-import frc.robot.Swerve.SwerveDrive;
+import frc.robot.swerve.SwerveDrive;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
@@ -33,14 +33,14 @@ public class TeleopSwerveWithAzimuth extends DebugCommandBase {
 
   /** Driver control */
   public TeleopSwerveWithAzimuth(
-      SwerveDrive swerveSubsystem,
-      DoubleSupplier translationAxis,
-      DoubleSupplier strafeAxis,
-      DoubleSupplier rotationXAxis,
-      DoubleSupplier rotationYAxis,
-      BooleanSupplier manualRotating,
-      boolean fieldRelative,
-      boolean openLoop) {
+          SwerveDrive swerveSubsystem,
+          DoubleSupplier translationAxis,
+          DoubleSupplier strafeAxis,
+          DoubleSupplier rotationXAxis,
+          DoubleSupplier rotationYAxis,
+          BooleanSupplier manualRotating,
+          boolean fieldRelative,
+          boolean openLoop) {
     this.swerveSubsystem = swerveSubsystem;
     addRequirements(swerveSubsystem);
 
@@ -89,11 +89,11 @@ public class TeleopSwerveWithAzimuth extends DebugCommandBase {
     // azimuth angle to
     // calculate error
     double rotationPIDOutput =
-        azimuthController.calculate(swerveSubsystem.getYaw().getDegrees(), azimuthAngle);
+            azimuthController.calculate(swerveSubsystem.getYaw().getDegrees(), azimuthAngle);
 
     translation = new Translation2d(yAxis, xAxis).times(kMaxSpeed);
     rotationPIDOutput =
-        MathUtil.clamp(rotationPIDOutput, -kMaxAngularVelocity, kMaxAngularVelocity);
+            MathUtil.clamp(rotationPIDOutput, -kMaxAngularVelocity, kMaxAngularVelocity);
 
     swerveSubsystem.drive(translation, rotationPIDOutput, fieldRelative, openLoop);
   }

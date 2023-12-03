@@ -5,7 +5,7 @@
 // license that can be found in the LICENSE file at
 // the root directory of this project.
 
-package frc.robot.Swerve.helpers;
+package frc.robot.swerve.helpers;
 
 import static frc.robot.elevator.ElevatorConstants.kRateLimiting;
 
@@ -38,12 +38,12 @@ public class AdaptiveSlewRateLimiter {
     // constant kRateLimiting is to adjust the weight of the height of the elevator
     // TODO: Test to see if 1/x is the best response for rate limiting
     double currRateLimit =
-        (Math.abs(input) > Math.abs(prevVal)
-            ? kRateLimiting * accelRateLimit * (1 / elevatorPosition)
-            : kRateLimiting * decelRateLimit * (1 / elevatorPosition));
+            (Math.abs(input) > Math.abs(prevVal)
+                    ? kRateLimiting * accelRateLimit * (1 / elevatorPosition)
+                    : kRateLimiting * decelRateLimit * (1 / elevatorPosition));
 
     prevVal +=
-        MathUtil.clamp(input - prevVal, -currRateLimit * elapsedTime, currRateLimit * elapsedTime);
+            MathUtil.clamp(input - prevVal, -currRateLimit * elapsedTime, currRateLimit * elapsedTime);
 
     prevTime = currentTime;
 
@@ -57,7 +57,7 @@ public class AdaptiveSlewRateLimiter {
     double currRateLimit = (Math.abs(input) > Math.abs(prevVal) ? accelRateLimit : decelRateLimit);
 
     prevVal +=
-        MathUtil.clamp(input - prevVal, -currRateLimit * elapsedTime, currRateLimit * elapsedTime);
+            MathUtil.clamp(input - prevVal, -currRateLimit * elapsedTime, currRateLimit * elapsedTime);
 
     prevTime = currentTime;
 

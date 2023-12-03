@@ -5,7 +5,7 @@
 // license that can be found in the LICENSE file at
 // the root directory of this project.
 
-package frc.robot.Swerve.helpers;
+package frc.robot.swerve.helpers;
 
 public class TrainingDataPoint {
 
@@ -15,7 +15,7 @@ public class TrainingDataPoint {
   public double stdDevAngle;
 
   public TrainingDataPoint(
-      double distance, double stdDevXTranslation, double stdDevYTranslation, double stdDevAngle) {
+          double distance, double stdDevXTranslation, double stdDevYTranslation, double stdDevAngle) {
     this.distance = distance;
     this.stdDevXTranslation = stdDevXTranslation;
     this.stdDevYTranslation = stdDevYTranslation;

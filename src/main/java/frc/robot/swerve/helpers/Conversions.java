@@ -5,7 +5,7 @@
 // license that can be found in the LICENSE file at
 // the root directory of this project.
 
-package frc.robot.Swerve.helpers;
+package frc.robot.swerve.helpers;
 
 public class Conversions {
 
@@ -107,7 +107,7 @@ public class Conversions {
    * @return Meters
    */
   public static double falconToMeters(
-      double positionCounts, double circumference, double gearRatio) {
+          double positionCounts, double circumference, double gearRatio) {
     return positionCounts * (circumference / (gearRatio * 2048.0));
   }
 

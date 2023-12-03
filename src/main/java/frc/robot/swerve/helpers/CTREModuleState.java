@@ -5,7 +5,7 @@
 // license that can be found in the LICENSE file at
 // the root directory of this project.
 
-package frc.robot.Swerve.helpers;
+package frc.robot.swerve.helpers;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -21,9 +21,9 @@ public class CTREModuleState {
    * @param currentAngle The current module angle.
    */
   public static SwerveModuleState optimize(
-      SwerveModuleState desiredState, Rotation2d currentAngle) {
+          SwerveModuleState desiredState, Rotation2d currentAngle) {
     double targetAngle =
-        placeInAppropriate0To360Scope(currentAngle.getDegrees(), desiredState.angle.getDegrees());
+            placeInAppropriate0To360Scope(currentAngle.getDegrees(), desiredState.angle.getDegrees());
     double targetSpeed = desiredState.speedMetersPerSecond;
     double delta = targetAngle - currentAngle.getDegrees();
     if (Math.abs(delta) > 90) {

@@ -5,7 +5,7 @@
 // license that can be found in the LICENSE file at
 // the root directory of this project.
 
-package frc.robot.Swerve.helpers;
+package frc.robot.swerve.helpers;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 
@@ -20,11 +20,11 @@ public class SwerveModuleConstants {
    *
    * @param driveMotorID
    * @param angleMotorID
-   * @param cancoderID
+   * @param canCoderID
    * @param angleOffset
    */
   public SwerveModuleConstants(
-      int driveMotorID, int angleMotorID, int cancoderID, Rotation2d angleOffset) {
+          int driveMotorID, int angleMotorID, int cancoderID, Rotation2d angleOffset) {
     this.driveMotorID = driveMotorID;
     this.angleMotorID = angleMotorID;
     this.cancoderID = cancoderID;

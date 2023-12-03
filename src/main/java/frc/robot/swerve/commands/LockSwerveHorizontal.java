@@ -5,20 +5,20 @@
 // license that can be found in the LICENSE file at
 // the root directory of this project.
 
-package frc.robot.Swerve.commands;
+package frc.robot.swerve.commands;
 
-import static frc.robot.Swerve.SwerveConstants.*;
+import static frc.robot.swerve.SwerveConstants.*;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode; //TODO: find phoenix 6 equivalent or alternative
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.robot.helpers.DebugCommandBase;
-import frc.robot.Swerve.SwerveDrive;
+import frc.robot.swerve.SwerveDrive;
 
-public class LockSwerveX extends DebugCommandBase {
+public class LockSwerveHorizontal extends DebugCommandBase {
   private final SwerveDrive swerveSubsystem;
 
-  public LockSwerveX(SwerveDrive swerveSubsystem) {
+  public LockSwerveHorizontal(SwerveDrive swerveSubsystem) {
     this.swerveSubsystem = swerveSubsystem;
     addRequirements(swerveSubsystem);
   }
@@ -30,7 +30,8 @@ public class LockSwerveX extends DebugCommandBase {
     SwerveModuleState[] states = new SwerveModuleState[4];
 
     for (int mod = 0; mod < 4; mod++) {
-      states[mod] = new SwerveModuleState(1, new Rotation2d(inwardAngle + kLockAngleOffsetsX[mod]));
+      states[mod] =
+              new SwerveModuleState(1, new Rotation2d(inwardAngle + klockAngleOffsetsHorizontal[mod]));
     }
 
     swerveSubsystem.setDesiredAngleState(states);

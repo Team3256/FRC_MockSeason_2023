@@ -5,7 +5,7 @@
 // license that can be found in the LICENSE file at
 // the root directory of this project.
 
-package frc.robot.Swerve.helpers;
+package frc.robot.swerve.helpers;
 
 import edu.wpi.first.math.util.Units;
 
@@ -24,16 +24,16 @@ public class COTSFalconSwerveConstants {
   public final boolean canCoderInvert;
 
   public COTSFalconSwerveConstants(
-      double wheelDiameter,
-      double angleGearRatio,
-      double driveGearRatio,
-      double angleKP,
-      double angleKI,
-      double angleKD,
-      double angleKF,
-      boolean driveMotorInvert,
-      boolean angleMotorInvert,
-      boolean canCoderInvert) {
+          double wheelDiameter,
+          double angleGearRatio,
+          double driveGearRatio,
+          double angleKP,
+          double angleKI,
+          double angleKD,
+          double angleKF,
+          boolean driveMotorInvert,
+          boolean angleMotorInvert,
+          boolean canCoderInvert) {
     this.wheelDiameter = wheelDiameter;
     this.wheelCircumference = wheelDiameter * Math.PI;
     this.angleGearRatio = angleGearRatio;
@@ -63,16 +63,16 @@ public class COTSFalconSwerveConstants {
     boolean angleMotorInvert = false;
     boolean canCoderInvert = false;
     return new COTSFalconSwerveConstants(
-        wheelDiameter,
-        angleGearRatio,
-        driveGearRatio,
-        angleKP,
-        angleKI,
-        angleKD,
-        angleKF,
-        driveMotorInvert,
-        angleMotorInvert,
-        canCoderInvert);
+            wheelDiameter,
+            angleGearRatio,
+            driveGearRatio,
+            angleKP,
+            angleKI,
+            angleKD,
+            angleKF,
+            driveMotorInvert,
+            angleMotorInvert,
+            canCoderInvert);
   }
 
   /** Swerve Drive Specialties - MK4 Module */
@@ -91,16 +91,16 @@ public class COTSFalconSwerveConstants {
     boolean angleMotorInvert = false;
     boolean canCoderInvert = false;
     return new COTSFalconSwerveConstants(
-        wheelDiameter,
-        angleGearRatio,
-        driveGearRatio,
-        angleKP,
-        angleKI,
-        angleKD,
-        angleKF,
-        driveMotorInvert,
-        angleMotorInvert,
-        canCoderInvert);
+            wheelDiameter,
+            angleGearRatio,
+            driveGearRatio,
+            angleKP,
+            angleKI,
+            angleKD,
+            angleKF,
+            driveMotorInvert,
+            angleMotorInvert,
+            canCoderInvert);
   }
 
   /** Swerve Drive Specialties - MK4i Module */
@@ -119,16 +119,16 @@ public class COTSFalconSwerveConstants {
     boolean angleMotorInvert = true;
     boolean canCoderInvert = false;
     return new COTSFalconSwerveConstants(
-        wheelDiameter,
-        angleGearRatio,
-        driveGearRatio,
-        angleKP,
-        angleKI,
-        angleKD,
-        angleKF,
-        driveMotorInvert,
-        angleMotorInvert,
-        canCoderInvert);
+            wheelDiameter,
+            angleGearRatio,
+            driveGearRatio,
+            angleKP,
+            angleKI,
+            angleKD,
+            angleKF,
+            driveMotorInvert,
+            angleMotorInvert,
+            canCoderInvert);
   }
 
   /* Drive Gear Ratios for all supported modules */

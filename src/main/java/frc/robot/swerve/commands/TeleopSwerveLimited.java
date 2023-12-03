@@ -5,13 +5,13 @@
 // license that can be found in the LICENSE file at
 // the root directory of this project.
 
-package frc.robot.Swerve.commands;
+package frc.robot.swerve.commands;
 
-import static frc.robot.Swerve.SwerveConstants.*;
+import static frc.robot.swerve.SwerveConstants.*;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.helpers.DebugCommandBase;
-import frc.robot.Swerve.SwerveDrive;
+import frc.robot.swerve.SwerveDrive;
 import java.util.function.DoubleSupplier;
 
 public class TeleopSwerveLimited extends DebugCommandBase {
@@ -26,12 +26,12 @@ public class TeleopSwerveLimited extends DebugCommandBase {
   private DoubleSupplier rotationAxis;
 
   public TeleopSwerveLimited(
-      SwerveDrive swerveSubsystem,
-      DoubleSupplier translationAxis,
-      DoubleSupplier strafeAxis,
-      DoubleSupplier rotationAxis,
-      boolean fieldRelative,
-      boolean openLoop) {
+          SwerveDrive swerveSubsystem,
+          DoubleSupplier translationAxis,
+          DoubleSupplier strafeAxis,
+          DoubleSupplier rotationAxis,
+          boolean fieldRelative,
+          boolean openLoop) {
 
     this.swerveSubsystem = swerveSubsystem;
     addRequirements(swerveSubsystem);
