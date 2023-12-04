@@ -36,7 +36,7 @@ public class Intake extends SubsystemBase {
     // Subsystem::RunOnce implicitly requires `this` subsystem.
     return runOnce(
         () -> {
-          intakeMotor.setVoltage(2);
+            intakeMotor.setVoltage(2);
         });
   }
 

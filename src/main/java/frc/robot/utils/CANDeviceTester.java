@@ -20,6 +20,13 @@ public class CANDeviceTester {
     SmartDashboard.putBoolean(message, value);
   }
 
+  //log names and descriptions of status codes
+
+  private static void logStatusCode(String name, String descriptions ){
+    System.out.println(name + " | " + descriptions);
+    SmartDashboard.putString(name, descriptions);
+  }
+
   /**
    * Helper method to test PDP
    *
@@ -42,7 +49,6 @@ public class CANDeviceTester {
     // if (temp == 0)
     // System.out.println("TalonFX " + device.getDeviceID() + " offline");
     // return temp != 0;
-
     StatusCode outputTalon = device.getVersion().getError();
 
     boolean isTalonAlive = outputTalon.isOK();
@@ -56,6 +62,8 @@ public class CANDeviceTester {
             + device.getCANBus()
             + ")",
         isTalonAlive);
+    
+    logStatusCode(outputTalon.getName(), outputTalon.getDescription());
 
     return isTalonAlive;
   }
@@ -78,6 +86,7 @@ public class CANDeviceTester {
         "Pigeon Motor ID " + device.getDeviceID() + " (CAN Bus: " + device.getCANBus() + ")",
         isPigeonAlive);
 
+    logStatusCode(output.getName(), output.getDescription());
     return isPigeonAlive;
   }
 
@@ -103,6 +112,8 @@ public class CANDeviceTester {
     log(
         "CANCoder Motor ID " + device.getDeviceID() + " (CAN Bus: " + device.getCANBus() + ")",
         isCANCoderAlive);
+
+    logStatusCode(output.getName(), output.getDescription());
     return isCANCoderAlive;
   }
 }
