@@ -8,6 +8,7 @@
 package frc.robot.subsystems.swerve.helpers;
 
 import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
 import edu.wpi.first.math.util.Units;
 
 /* Contains values and required settings for common COTS swerve modules. */
@@ -22,7 +23,7 @@ public class COTSFalconSwerveConstants {
     public final double angleKF;
     public final InvertedValue driveMotorInvert;
     public final InvertedValue angleMotorInvert;
-    public final boolean canCoderInvert;
+    public final SensorDirectionValue canCoderInvert;
 
     public COTSFalconSwerveConstants(
             double wheelDiameter,
@@ -45,7 +46,31 @@ public class COTSFalconSwerveConstants {
         this.angleKF = angleKF;
         this.driveMotorInvert = driveMotorInvert ? InvertedValue.CounterClockwise_Positive : InvertedValue.Clockwise_Positive;
         this.angleMotorInvert = angleMotorInvert ? InvertedValue.CounterClockwise_Positive : InvertedValue.Clockwise_Positive;
-        this.canCoderInvert = canCoderInvert;
+        this.canCoderInvert = canCoderInvert ? SensorDirectionValue.CounterClockwise_Positive : SensorDirectionValue.Clockwise_Positive;
+    }
+
+    public COTSFalconSwerveConstants(
+            double wheelDiameter,
+            double angleGearRatio,
+            double driveGearRatio,
+            double angleKP,
+            double angleKI,
+            double angleKD,
+            double angleKF,
+            InvertedValue driveMotorInvert,
+            InvertedValue angleMotorInvert,
+            SensorDirectionValue canCoderInvert) {
+        this.wheelDiameter = wheelDiameter;
+        this.wheelCircumference = wheelDiameter * Math.PI;
+        this.angleGearRatio = angleGearRatio;
+        this.driveGearRatio = driveGearRatio;
+        this.angleKP = angleKP;
+        this.angleKI = angleKI;
+        this.angleKD = angleKD;
+        this.angleKF = angleKF;
+        this.driveMotorInvert = driveMotorInvert;
+        this.angleMotorInvert = angleMotorInvert;
+        this.canCoderInvert = canCoderInvert ;
     }
 
     /** Swerve Drive Specialties - MK3 Module */
@@ -60,9 +85,9 @@ public class COTSFalconSwerveConstants {
         double angleKD = 0.0;
         double angleKF = 0.0;
 
-        boolean driveMotorInvert = false;
-        boolean angleMotorInvert = false;
-        boolean canCoderInvert = false;
+        InvertedValue driveMotorInvert = InvertedValue.CounterClockwise_Positive;
+        InvertedValue angleMotorInvert = InvertedValue.CounterClockwise_Positive;
+        SensorDirectionValue canCoderInvert = SensorDirectionValue.Clockwise_Positive;
         return new COTSFalconSwerveConstants(
                 wheelDiameter,
                 angleGearRatio,

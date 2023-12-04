@@ -11,9 +11,9 @@ import frc.robot.subsystems.swerve.swerveConstants;
 import static frc.robot.subsystems.swerve.swerveConstants.*;
 
 public final class CTREConfigs {
-  public TalonFXConfiguration swerveAngleFXConfig = new TalonFXConfiguration();
-  public TalonFXConfiguration swerveDriveFXConfig = new TalonFXConfiguration();
-  public CANcoderConfiguration swerveCANcoderConfig = new CANcoderConfiguration();
+  public static TalonFXConfiguration swerveAngleFXConfig = new TalonFXConfiguration();
+  public static TalonFXConfiguration swerveDriveFXConfig = new TalonFXConfiguration();
+  public static CANcoderConfiguration swerveCANcoderConfig = new CANcoderConfiguration();
 
   public CTREConfigs(){
     /** Swerve Angle Motor Configurations */

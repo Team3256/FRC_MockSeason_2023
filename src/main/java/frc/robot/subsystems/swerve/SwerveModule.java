@@ -1,72 +1,39 @@
-// Copyright (c) 2023 FRC 3256
-// https://github.com/Team3256
-//
-// Use of this source code is governed by an MIT-style
-// license that can be found in the LICENSE file at
-// the root directory of this project.
-
 package frc.robot.subsystems.swerve;
 
-import static frc.robot.Constants.ShuffleboardConstants.kElectricalTabName;
-import static frc.robot.subsystems.swerve.swerveConstants.*;
-
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.PositionDutyCycle;
-
+import com.ctre.phoenix6.controls.DutyCycleOut;
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
-import com.ctre.phoenix6.signals.NeutralModeValue;
-import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.drivers.CANDeviceTester;
-import frc.robot.logging.Loggable;
+import frc.lib.math.Conversions;
+import frc.lib.util.CTREModuleState;
+import frc.robot.subsystems.swerve.SwerveModuleConstants;
 import frc.robot.subsystems.swerve.helpers.CTREConfigs;
-import frc.robot.subsystems.swerve.helpers.CTREModuleState;
-import frc.robot.subsystems.swerve.helpers.Conversions;
+import frc.robot.subsystems.swerve.swerveConstants;
 
-public class SwerveModule implements Loggable {
+public class SwerveModule {
     public int moduleNumber;
-    private TalonFX mAngleMotor;
-    private TalonFX mDriveMotor;
-    private CANcoder angleEncoder;
     private Rotation2d angleOffset;
     private Rotation2d lastAngle;
 
-    private TalonFXConfiguration TalonFXConfigs = new TalonFXConfiguration();
+    private TalonFX mAngleMotor;
+    private TalonFX mDriveMotor;
+    private CANcoder angleEncoder;
 
-    SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(kDriveKS, kDriveKV, kDriveKA);
+    private final SimpleMotorFeedforward driveFeedForward = new SimpleMotorFeedforward(swerveConstants.kDriveKS, swerveConstants.kDriveKV, swerveConstants.kDriveKA);
 
-    private void setSpeed(SwerveModuleState desiredState, boolean isOpenLoop) {
-        if (isOpenLoop) {
-            double percentOutput = desiredState.speedMetersPerSecond / kMaxSpeed;
-            mDriveMotor.set(percentOutput);
-        } else {
-            double velocity =
-                    Conversions.MPSToFalcon(
-                            desiredState.speedMetersPerSecond, kWheelCircumference, kDriveGearRatio);
-            mDriveMotor.set(velocity);
-        }
-    }
+    /* drive motor control requests */
+    private final DutyCycleOut driveDutyCycle = new DutyCycleOut(0);
+    private final VelocityVoltage driveVelocity = new VelocityVoltage(0);
 
-    private void setAngle(SwerveModuleState desiredState) {
-        Rotation2d angle =
-                (Math.abs(desiredState.speedMetersPerSecond) <= (kMaxSpeed * 0.01))
-                        ? lastAngle
-                        : desiredState
-                        .angle; // Prevent rotating module if speed is less than 1%. Prevents Jittering.
+    /* angle motor control requests */
+    private final PositionVoltage anglePosition = new PositionVoltage(0);
 
-        mAngleMotor.set(Conversions.degreesToFalcon(angle.getDegrees(), kAngleGearRatio));
-        lastAngle = angle;
-    }
-    public SwerveModule(int moduleNumber, SwerveModuleConstants moduleConstants) {
+    public SwerveModule(int moduleNumber, SwerveModuleConstants moduleConstants){
         this.moduleNumber = moduleNumber;
         this.angleOffset = moduleConstants.angleOffset;
 
@@ -85,129 +52,77 @@ public class SwerveModule implements Loggable {
         lastAngle = getState().angle;
     }
 
-    public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop) {
-        /*
-         * This is a custom optimize function, since default WPILib optimize assumes
-         * continuous controller which CTRE and Rev onboard is not
-         */
+    public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop){
+        /* This is a custom optimize function, since default WPILib optimize assumes continuous controller which CTRE and Rev onboard is not */
         desiredState = CTREModuleState.optimize(desiredState, getState().angle);
         setAngle(desiredState);
         setSpeed(desiredState, isOpenLoop);
     }
 
-    private Rotation2d getAngle() {
-        return Rotation2d.fromDegrees(
-                Conversions.falconToDegrees(mAngleMotor.getSelectedSensorPosition(), kAngleGearRatio));
+    private void setSpeed(SwerveModuleState desiredState, boolean isOpenLoop){
+        if(isOpenLoop){
+            driveDutyCycle.Output = desiredState.speedMetersPerSecond / swerveConstants.kMaxSpeed;
+            mDriveMotor.setControl(driveDutyCycle);
+        }
+        else {
+            driveVelocity.Velocity = Conversions.MPSToTalon(desiredState.speedMetersPerSecond, swerveConstants.kWheelCircumference, swerveConstants.kDriveGearRatio);
+            driveVelocity.FeedForward = driveFeedForward.calculate(desiredState.speedMetersPerSecond);
+            mDriveMotor.setControl(driveVelocity);
+        }
     }
 
-    public Rotation2d getCanCoder() {
-        return Rotation2d.fromDegrees(angleEncoder.getAbsolutePosition());
-    }
 
-    public void resetToAbsolute() {
-        double absolutePosition =
-                Conversions.degreesToFalcon(
-                        getCanCoder().getDegrees() - angleOffset.getDegrees(), kAngleGearRatio);
-        mAngleMotor.setSelectedSensorPosition(absolutePosition);
-    }
+    private void setAngle(SwerveModuleState desiredState){
+        Rotation2d angle = (Math.abs(desiredState.speedMetersPerSecond) <= (swerveConstants.kMaxSpeed * 0.01)) ? lastAngle : desiredState.angle; //Prevent rotating module if speed is less then 1%. Prevents Jittering.
 
-    private void configAngleEncoder() {
-        angleEncoder.configFactoryDefault();
-        angleEncoder.configAllSettings(ctreConfigs.swerveCanCoderConfig);
-    }
-
-    private void configAngleMotor() {
-        mAngleMotor.configFactoryDefault();
-        mAngleMotor.configAllSettings(CTREConfigs.swerveAngleFXConfig);
-        mAngleMotor.setInverted(kAngleMotorInvert);
-        mAngleMotor.setNeutralMode(kAngleNeutralMode);
-        resetToAbsolute();
-    }
-
-    private void configDriveMotor() {
-        mDriveMotor.getConfigurator().apply(TalonFXConfigs);
-        mDriveMotor.setInverted(kDriveMotorInvert);
-
-//    mDriveMotor.configFactoryDefault();
-//    mDriveMotor.configAllSettings(ctreConfigs.swerveDriveFXConfig);
-//    mDriveMotor.setInverted(kDriveMotorInvert);
-//    mDriveMotor.setNeutralMode(kDriveNeutralMode);
-//    mDriveMotor.setSelectedSensorPosition(0);
-    }
-
-    public SwerveModuleState getState() {
-        return new SwerveModuleState(
-                Conversions.falconToMPS(
-                        mDriveMotor.getSelectedSensorVelocity(), kWheelCircumference, kDriveGearRatio),
-                getAngle());
-    }
-
-    public SwerveModulePosition getPosition() {
-        return new SwerveModulePosition(
-                Conversions.falconToMeters(
-                        mDriveMotor.getSelectedSensorPosition(), kWheelCircumference, kDriveGearRatio),
-                getAngle());
-    }
-
-    public void setDesiredAngleState(SwerveModuleState desiredState) {
-        desiredState = CTREModuleState.optimize(desiredState, getPosition().angle);
-
-        Rotation2d angle =
-                (Math.abs(desiredState.speedMetersPerSecond) <= (kMaxSpeed * 0.01))
-                        ? lastAngle
-                        : desiredState.angle;
-
-        mAngleMotor.set(
-                ControlMode.Position, Conversions.degreesToFalcon(angle.getDegrees(), kAngleGearRatio));
+        anglePosition.Position = Conversions.degreesToTalon(angle.getDegrees(), swerveConstants.kAngleGearRatio);
+        mAngleMotor.setControl(anglePosition);
         lastAngle = angle;
     }
 
-    public void setDriveMotorNeutralMode(NeutralModeValue neutralMode) {
-        mDriveMotor.setNeutralMode(neutralMode);
+    private Rotation2d getAngle(){
+        return Rotation2d.fromDegrees(Conversions.talonToDegrees(mAngleMotor.getPosition().getValue(), swerveConstants.kAngleGearRatio));
     }
 
-    public void setAngleMotorNeutralMode(NeutralModeValue neutralMode) {
-        mAngleMotor.setNeutralMode(neutralMode);
+    public Rotation2d getCANcoder(){
+        return Rotation2d.fromRotations(angleEncoder.getAbsolutePosition().getValue());
     }
 
-    public CANcoder getAngleMotor() {
-        return mAngleMotor;
+    private Rotation2d waitForCANcoder(){
+        /* wait for up to 250ms for a new CANcoder position */
+        return Rotation2d.fromRotations(angleEncoder.getAbsolutePosition().waitForUpdate(250).getValue());
     }
 
-    public CANcoder getDriveMotor() {
-        return mDriveMotor;
+    public void resetToAbsolute(){
+        double absolutePosition = Conversions.degreesToTalon(waitForCANcoder().getDegrees() - angleOffset.getDegrees(), swerveConstants.kAngleGearRatio);
+        mAngleMotor.setRotorPosition(absolutePosition);
     }
 
-    public CANcoder getAngleEncoder() {
-        return angleEncoder;
+    private void configAngleEncoder(){
+        angleEncoder.getConfigurator().apply(CTREConfigs.swerveCANcoderConfig);
     }
 
-    @Override
-    public void logInit() {
-        getLayout(kElectricalTabName).add("Turn Motor Bus Voltage", getAngleMotor().getBusVoltage());
-        getLayout(kElectricalTabName)
-                .add("Turn Motor Output Voltage", getAngleMotor().getMotorOutputVoltage());
-        getLayout(kElectricalTabName).add("Drive Motor Bus Voltage", getDriveMotor().getBusVoltage());
-        getLayout(kElectricalTabName)
-                .add("Drive Motor Output Voltage", getDriveMotor().getMotorOutputVoltage());
+    private void configAngleMotor(){
+        mAngleMotor.getConfigurator().apply(CTREConfigs.swerveAngleFXConfig);
+        resetToAbsolute();
     }
 
-    @Override
-    public ShuffleboardLayout getLayout(String tabName) {
-        return Shuffleboard.getTab(tabName)
-                .getLayout("Mod " + moduleNumber, BuiltInLayouts.kList)
-                .withSize(2, 1);
+    private void configDriveMotor(){
+        mDriveMotor.getConfigurator().apply(CTREConfigs.swerveDriveFXConfig);
+        mDriveMotor.getConfigurator().setRotorPosition(0);
     }
 
-    public boolean test() {
-        System.out.println("Testing swerve module CAN:");
-        boolean result =
-                CANDeviceTester.testTalonFX(mDriveMotor)
-                        && CANDeviceTester.testTalonFX(mAngleMotor)
-                        && CANDeviceTester.testCANCoder(angleEncoder);
+    public SwerveModuleState getState(){
+        return new SwerveModuleState(
+                Conversions.talonToMPS(mDriveMotor.getVelocity().getValue(), swerveConstants.kWheelCircumference, swerveConstants.kDriveGearRatio),
+                getAngle()
+        );
+    }
 
-        System.out.println("Swerve module CAN connected: " + result);
-        SmartDashboard.putBoolean("Swerve module CAN connected", result);
-        return result;
+    public SwerveModulePosition getPosition(){
+        return new SwerveModulePosition(
+                Conversions.talonToMeters(mDriveMotor.getPosition().getValue(), swerveConstants.kWheelCircumference, swerveConstants.kDriveGearRatio),
+                getAngle()
+        );
     }
 }

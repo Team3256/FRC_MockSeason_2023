@@ -23,6 +23,24 @@ import java.util.List;
 
 public final class swerveConstants {
 
+    public enum RobotType {
+        ZIPTIDE {
+            @Override
+            public Rotation2d getOffset(int module) {
+                return kZiptideOffsets[module];
+            }
+        },
+
+        ALPHA {
+            @Override
+            public Rotation2d getOffset(int module) {
+                return kAlphaOffsets[module];
+            }
+        };
+
+        public abstract Rotation2d getOffset(int module);
+    }
+
     public static final List<TrainingDataPoint> kSwervePoseEstimatorStdData =
             List.of(
                     new TrainingDataPoint(0.804213, 6.29097, 2.53362, 0.157388), // impossible location

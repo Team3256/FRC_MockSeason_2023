@@ -13,6 +13,8 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import frc.robot.subsystems.swerve.swerveConstants;
+
 import java.util.Map;
 
 public final class Constants {
@@ -37,6 +39,7 @@ public final class Constants {
   public static final Field2d trajectoryViewer = new Field2d();
   public static final Field2d waypointViewer = new Field2d();
   public static final Field2d swerveViewer = new Field2d();
+  public static swerveConstants.RobotType kRobotType;
 
   public static final class FeatureFlags {
     public static final boolean kAutoScoreEnabled = true;
