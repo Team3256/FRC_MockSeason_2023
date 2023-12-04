@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.Intake;
+import frc.robot.utils.CANConnectionManager;
+import frc.robot.utils.CANTestable;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -61,4 +63,5 @@ public class RobotContainer {
   // // An example command will be run in autonomous
   // return Autos.exampleAuto(m_exampleSubsystem);
   // }
+
 }
