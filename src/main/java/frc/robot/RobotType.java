@@ -13,19 +13,19 @@ import static frc.robot.subsystems.swerve.swerveConstants.kZiptideOffsets;
 import edu.wpi.first.math.geometry.Rotation2d;
 
 public enum RobotType {
-    ZIPTIDE {
-        @Override
-        public Rotation2d getOffset(int module) {
-            return kZiptideOffsets[module];
-        }
-    },
+  ZIPTIDE {
+    @Override
+    public Rotation2d getOffset(int module) {
+      return kZiptideOffsets[module];
+    }
+  },
 
-    ALPHA {
-        @Override
-        public Rotation2d getOffset(int module) {
-            return kAlphaOffsets[module];
-        }
-    };
+  ALPHA {
+    @Override
+    public Rotation2d getOffset(int module) {
+      return kAlphaOffsets[module];
+    }
+  };
 
-    public abstract Rotation2d getOffset(int module);
+  public abstract Rotation2d getOffset(int module);
 }

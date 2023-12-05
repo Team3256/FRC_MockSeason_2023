@@ -1,21 +1,26 @@
+// Copyright (c) 2023 FRC 3256
+// https://github.com/Team3256
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file at
+// the root directory of this project.
+
 package frc.robot.subsystems.swerve.helpers;
+
+import static frc.robot.subsystems.swerve.swerveConstants.*;
 
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import frc.robot.Constants;
-import frc.robot.subsystems.swerve.swerveConstants;
-
-import static frc.robot.subsystems.swerve.swerveConstants.*;
 
 public final class CTREConfigs {
   public static TalonFXConfiguration swerveAngleFXConfig = new TalonFXConfiguration();
   public static TalonFXConfiguration swerveDriveFXConfig = new TalonFXConfiguration();
   public static CANcoderConfiguration swerveCANcoderConfig = new CANcoderConfiguration();
 
-  public CTREConfigs(){
+  public CTREConfigs() {
     /** Swerve Angle Motor Configurations */
     /* Motor Inverts and Neutral Mode */
     MotorOutputConfigs angleMotorOutput = swerveAngleFXConfig.MotorOutput;

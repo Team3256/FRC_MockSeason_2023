@@ -9,16 +9,16 @@ package frc.robot.subsystems.swerve.helpers;
 
 public class TrainingDataPoint {
 
-    public double distance;
-    public double stdDevXTranslation;
-    public double stdDevYTranslation;
-    public double stdDevAngle;
+  public double distance;
+  public double stdDevXTranslation;
+  public double stdDevYTranslation;
+  public double stdDevAngle;
 
-    public TrainingDataPoint(
-            double distance, double stdDevXTranslation, double stdDevYTranslation, double stdDevAngle) {
-        this.distance = distance;
-        this.stdDevXTranslation = stdDevXTranslation;
-        this.stdDevYTranslation = stdDevYTranslation;
-        this.stdDevAngle = stdDevAngle;
-    }
+  public TrainingDataPoint(
+      double distance, double stdDevXTranslation, double stdDevYTranslation, double stdDevAngle) {
+    this.distance = distance;
+    this.stdDevXTranslation = stdDevXTranslation;
+    this.stdDevYTranslation = stdDevYTranslation;
+    this.stdDevAngle = stdDevAngle;
+  }
 }
