@@ -7,6 +7,13 @@
 
 package frc.robot.utils;
 
-/* Basically a type union between TalonFX, Pigeon2, CANcoder, and PowerDistribution
+import com.ctre.phoenix6.hardware.ParentDevice;
+
+import java.util.ArrayList;
+
+/*
+ * If your subsystem uses CAN devices, implement this interface
  */
-public interface CANTestable {}
+public interface UsesCANDevices {
+    ArrayList<ParentDevice> getDevices();
+}

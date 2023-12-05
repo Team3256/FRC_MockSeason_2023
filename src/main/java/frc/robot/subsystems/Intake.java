@@ -8,14 +8,19 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.hardware.ParentDevice;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.utils.CANDeviceTester;
+import frc.robot.utils.UsesCANDevices;
 
-public class Intake extends SubsystemBase {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Intake extends SubsystemBase implements UsesCANDevices {
     private TalonFX intakeMotor;
 
     public Intake() {
@@ -24,8 +29,8 @@ public class Intake extends SubsystemBase {
         }
     }
 
-    public TalonFX getIntakeMotor() {
-        return intakeMotor;
+    public ArrayList<ParentDevice> getDevices() {
+        return new ArrayList<>(List.of(new TalonFX[]{intakeMotor}));
     }
 
     private void configureRealHardware() {
@@ -43,12 +48,13 @@ public class Intake extends SubsystemBase {
     @Override
     public void periodic() {
         StatusSignal<Double> intakeCurrent = intakeMotor.getSupplyCurrent();
+        String description = CANDeviceTester.getLogDescription(intakeMotor) + "intake current";
         if (intakeCurrent.getError().isOK()) {
             SmartDashboard.putNumber(
-                    "Yummy" + CANDeviceTester.getLogDescription(intakeMotor), intakeCurrent.getValue());
+                    description, intakeCurrent.getValue());
         } else {
             // Funny number for funny business
-            SmartDashboard.putNumber("Yummy" + CANDeviceTester.getLogDescription(intakeMotor), -69420);
+            SmartDashboard.putNumber(description, -69420);
         }
     }
 }
