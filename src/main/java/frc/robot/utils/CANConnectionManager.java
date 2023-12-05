@@ -11,7 +11,6 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.ParentDevice;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.hardware.TalonFX;
-
 import java.util.ArrayList; // import the ArrayList class
 
 /*
@@ -22,49 +21,48 @@ import java.util.ArrayList; // import the ArrayList class
  * Use the getBrokenDevice() method to get the first broken device in the daisy chain
  */
 public class CANConnectionManager {
-    private ArrayList<ParentDevice> devices = new ArrayList<>();
+  private ArrayList<ParentDevice> devices = new ArrayList<>();
 
-    public CANConnectionManager(ArrayList<ParentDevice> initialDevices) {
-        devices = initialDevices;
-    }
+  public CANConnectionManager(ArrayList<ParentDevice> initialDevices) {
+    devices = initialDevices;
+  }
 
-    public CANConnectionManager() {
-    }
+  public CANConnectionManager() {}
 
-    /*
-     * Add a single `ParentDevice` to the CAN chain
-     */
-    public void add(ParentDevice device) {
-        devices.add(device);
-    }
+  /*
+   * Add a single `ParentDevice` to the CAN chain
+   */
+  public void add(ParentDevice device) {
+    devices.add(device);
+  }
 
-    /*
-     * Add a subsystem that uses devices to the CAN chain
-     */
-    public void add(UsesCANDevices device) {
-        devices.addAll(device.getDevices());
-    }
+  /*
+   * Add a subsystem that uses devices to the CAN chain
+   */
+  public void add(UsesCANDevices device) {
+    devices.addAll(device.getDevices());
+  }
 
-    /*
-     * Returns the first broken device in the CAN daisy
-     * chain or null if all devices are online
-     */
-    public ParentDevice getBrokenDevice() {
-        for (ParentDevice device : devices) {
-            if (device instanceof TalonFX) {
-                if (!CANDeviceTester.testTalonFX((TalonFX) device)) {
-                    return device;
-                }
-            } else if (device instanceof Pigeon2) {
-                if (!CANDeviceTester.testPigeon((Pigeon2) device)) {
-                    return device;
-                }
-            } else if (device instanceof CANcoder) {
-                if (!CANDeviceTester.testCANCoder((CANcoder) device)) {
-                    return device;
-                }
-            }
+  /*
+   * Returns the first broken device in the CAN daisy
+   * chain or null if all devices are online
+   */
+  public ParentDevice getBrokenDevice() {
+    for (ParentDevice device : devices) {
+      if (device instanceof TalonFX) {
+        if (!CANDeviceTester.testTalonFX((TalonFX) device)) {
+          return device;
         }
-        return null;
+      } else if (device instanceof Pigeon2) {
+        if (!CANDeviceTester.testPigeon((Pigeon2) device)) {
+          return device;
+        }
+      } else if (device instanceof CANcoder) {
+        if (!CANDeviceTester.testCANCoder((CANcoder) device)) {
+          return device;
+        }
+      }
     }
+    return null;
+  }
 }

@@ -8,12 +8,11 @@
 package frc.robot.utils;
 
 import com.ctre.phoenix6.hardware.ParentDevice;
-
 import java.util.ArrayList;
 
 /*
  * If your subsystem uses CAN devices, implement this interface
  */
 public interface UsesCANDevices {
-    ArrayList<ParentDevice> getDevices();
+  ArrayList<ParentDevice> getDevices();
 }
