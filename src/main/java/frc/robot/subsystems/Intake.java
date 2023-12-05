@@ -16,8 +16,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.utils.CANDeviceTester;
 import frc.robot.utils.UsesCANDevices;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Intake extends SubsystemBase implements UsesCANDevices {
   private TalonFX intakeMotor;
@@ -28,8 +26,8 @@ public class Intake extends SubsystemBase implements UsesCANDevices {
     }
   }
 
-  public ArrayList<ParentDevice> getDevices() {
-    return new ArrayList<>(List.of(new TalonFX[] {intakeMotor}));
+  public ParentDevice[] getCANDevices() {
+    return new ParentDevice[] {intakeMotor};
   }
 
   private void configureRealHardware() {

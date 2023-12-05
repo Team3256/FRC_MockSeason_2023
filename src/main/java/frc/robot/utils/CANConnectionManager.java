@@ -7,11 +7,14 @@
 
 package frc.robot.utils;
 
+import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.ParentDevice;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.hardware.TalonFX;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.ArrayList; // import the ArrayList class
+import java.util.List;
 
 /*
  * This class is used to manage the CAN daisy chain and test for broken devices
@@ -22,6 +25,92 @@ import java.util.ArrayList; // import the ArrayList class
  */
 public class CANConnectionManager {
   private ArrayList<ParentDevice> devices = new ArrayList<>();
+
+  static class CANDeviceTester {
+    public static String getLogDescription(TalonFX device) {
+      return "TalonFX Motor ID "
+          + device.getDeviceID()
+          + " (description: '"
+          + device.getDescription()
+          + "', CAN Bus: "
+          + device.getCANBus()
+          + ") ";
+    }
+
+    public static String getLogDescription(String name, ParentDevice device) {
+      return name + " Motor ID " + device.getDeviceID() + " (CAN Bus: " + device.getCANBus() + ") ";
+    }
+
+    private static void log(String message, boolean value) {
+      System.out.println(message + " | " + value);
+      SmartDashboard.putBoolean(message, value);
+    }
+
+    /*
+     * Helper method to test PDP
+     *
+     * <p>We can't use the new APIs here as this is a WPILib-provided class
+     *
+     * @return Returns whether the PDP is online
+     */
+    //    public static boolean testPDP(PowerDistribution device) {
+    //        double voltage = device.getVoltage();
+    //        log("Is PDP online?", voltage != 0);
+    //        return voltage != 0;
+    //    }
+
+    /**
+     * @param device talon fx id to test
+     * @return Returns whether all the TalonFXs are online
+     */
+    public static boolean testTalonFX(TalonFX device) {
+      StatusCode outputTalon = device.getVersion().getError();
+
+      boolean isTalonAlive = outputTalon.isOK();
+
+      log(getLogDescription(device) + "is alive?", isTalonAlive);
+
+      return isTalonAlive;
+    }
+
+    /**
+     * @param device pigeon to test
+     * @return Returns whether the Pigeon is online
+     */
+    public static boolean testPigeon(Pigeon2 device) {
+
+      StatusCode output = device.getVersion().getError();
+
+      boolean isPigeonAlive = output.isOK();
+
+      log(getLogDescription("Pigeon", device) + "is alive?", isPigeonAlive);
+
+      return isPigeonAlive;
+    }
+
+    // /**
+    // * @param device spark max to test
+    // * @return Returns whether the SparkMax is online
+    // */
+    // public static boolean testSparkMax(CANSparkMax device) {
+    // double temp = device.getMotorTemperature();
+    // if (temp == 0)
+    // System.out.println("SparkMax " + device.getDeviceId() + " offline");
+    // return temp != 0;
+    // }
+
+    /**
+     * @param device CANCoder to test
+     * @return Returns whether the CanCoder is online
+     */
+    public static boolean testCANCoder(CANcoder device) {
+      StatusCode output = device.getVersion().getError();
+      boolean isCANCoderAlive = output.isOK();
+
+      log(getLogDescription("CANCoder", device) + "is alive?", isCANCoderAlive);
+      return isCANCoderAlive;
+    }
+  }
 
   public CANConnectionManager(ArrayList<ParentDevice> initialDevices) {
     // XXX: I probably should've used .copy here
@@ -41,7 +130,7 @@ public class CANConnectionManager {
    * Add a subsystem that uses devices to the CAN chain
    */
   public void add(UsesCANDevices device) {
-    devices.addAll(device.getDevices());
+    devices.addAll(List.of(device.getCANDevices()));
   }
 
   /*
