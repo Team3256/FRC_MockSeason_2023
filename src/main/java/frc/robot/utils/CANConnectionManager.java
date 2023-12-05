@@ -24,6 +24,7 @@ public class CANConnectionManager {
   private ArrayList<ParentDevice> devices = new ArrayList<>();
 
   public CANConnectionManager(ArrayList<ParentDevice> initialDevices) {
+    // XXX: I probably should've used .copy here
     devices = initialDevices;
   }
 
