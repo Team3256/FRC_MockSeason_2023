@@ -31,6 +31,6 @@ public class IntakeCone {
   }
 
   public void initalize() {
-    intakeSubsystem.activate();
+    intakeSubsystem.start();
   }
 }
