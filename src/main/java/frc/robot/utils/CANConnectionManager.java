@@ -13,37 +13,25 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import java.util.ArrayList; // import the ArrayList class
 
-public class CANConnectionManager {
-  private ArrayList<CANTestable> devices = new ArrayList<CANTestable>();
+public class CANConnectionManager<T> {
+  private ArrayList<T> devices = new ArrayList<T>();
 
-  public CANConnectionManager(ArrayList<CANTestable> initialDevices) {
+  public CANConnectionManager(ArrayList<T> initialDevices) {
     devices = initialDevices;
   }
 
   public CANConnectionManager() {}
 
-  public void add(PowerDistribution device) {
-    devices.add((CANTestable) device);
-  }
-
-  public void add(TalonFX device) {
-    devices.add((CANTestable) device);
-  }
-
-  public void add(Pigeon2 device) {
-    devices.add((CANTestable) device);
-  }
-
-  public void add(CANcoder device) {
-    devices.add((CANTestable) device);
+  public void add(T device) {
+    devices.add(device);
   }
 
   /*
    * Returns the first broken device in the CAN daisy chain or null if all devices
    * are online
    */
-  public CANTestable getBrokenDevice() {
-    for (CANTestable device : devices) {
+  public T getBrokenDevice() {
+    for (T device : devices) {
       if (device instanceof PowerDistribution) {
         if (!CANDeviceTester.testPDP((PowerDistribution) device)) {
           return device;
