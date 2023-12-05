@@ -7,13 +7,13 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.RunIntake;
 import frc.robot.subsystems.Intake;
 import frc.robot.utils.CANConnectionManager;
-import frc.robot.utils.CANTestable;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -24,7 +24,8 @@ import frc.robot.utils.CANTestable;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Intake m_exampleSubsystem = new Intake();
-  private final CANConnectionManager m_canConnectionManager = new CANConnectionManager();
+  private final CANConnectionManager<TalonFX> m_canConnectionManager =
+      new CANConnectionManager<TalonFX>();
   //  private final CANDeviceTester
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -59,7 +60,7 @@ public class RobotContainer {
   }
 
   public void periodic() {
-    CANTestable brokenDevice = m_canConnectionManager.getBrokenDevice();
+    TalonFX brokenDevice = m_canConnectionManager.getBrokenDevice();
     if (brokenDevice != null) {
       System.out.println("Severed CAN Connection");
     }
