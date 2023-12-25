@@ -8,13 +8,20 @@
 package frc.robot.swerve.helpers;
 
 import static frc.robot.Constants.ShuffleboardConstants.kElectricalTabName;
+import static frc.robot.swerve.helpers.SwerveModuleConstants.*;
 import static frc.robot.swerve.SwerveConstants.*;
 
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.hardware.CANcoder;
+
+/*
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.WPI_CANCoder;
+*/
+
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -23,16 +30,17 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
 import frc.robot.drivers.CANDeviceTester;
 import frc.robot.logging.Loggable;
 
 public class SwerveModule implements Loggable {
   public int moduleNumber;
-  private WPI_TalonFX mAngleMotor;
-  private WPI_TalonFX mDriveMotor;
-  private WPI_CANCoder angleEncoder;
   private Rotation2d angleOffset;
   private Rotation2d lastAngle;
+  private CANcoder angleEncoder;
+  private TalonFX mAngleMotor;
+  private TalonFX mDriveMotor;
 
   private CTREConfigs ctreConfigs = new CTREConfigs();
 
@@ -43,15 +51,15 @@ public class SwerveModule implements Loggable {
     this.angleOffset = moduleConstants.angleOffset;
 
     /* Angle Encoder Config */
-    angleEncoder = new WPI_CANCoder(moduleConstants.cancoderID);
+    angleEncoder = new CANcoder(moduleConstants.cancoderID);
     configAngleEncoder();
 
     /* Angle Motor Config */
-    mAngleMotor = new WPI_TalonFX(moduleConstants.angleMotorID);
+    mAngleMotor = new TalonFX(moduleConstants.angleMotorID);
     configAngleMotor();
 
     /* Drive Motor Config */
-    mDriveMotor = new WPI_TalonFX(moduleConstants.driveMotorID);
+    mDriveMotor = new TalonFX(moduleConstants.driveMotorID);
     configDriveMotor();
 
     lastAngle = getState().angle;
@@ -91,23 +99,24 @@ public class SwerveModule implements Loggable {
 
   private Rotation2d getAngle() {
     return Rotation2d.fromDegrees(
-            Conversions.falconToDegrees(mAngleMotor.getSelectedSensorPosition(), kAngleGearRatio));
+            Conversions.falconToDegrees(mAngleMotor.getPosition().getValue(), kAngleGearRatio));
   }
 
   public Rotation2d getCanCoder() {
-    return Rotation2d.fromDegrees(angleEncoder.getAbsolutePosition());
+    return Rotation2d.fromDegrees(
+            angleEncoder.getAbsolutePosition().getValue());
   }
 
   public void resetToAbsolute() {
     double absolutePosition =
             Conversions.degreesToFalcon(
                     getCanCoder().getDegrees() - angleOffset.getDegrees(), kAngleGearRatio);
-    mAngleMotor.setSelectedSensorPosition(absolutePosition);
+    mAngleMotor.setRotorPosition(absolutePosition);
   }
 
   private void configAngleEncoder() {
-    angleEncoder.configFactoryDefault();
-    angleEncoder.configAllSettings(ctreConfigs.swerveCanCoderConfig);
+    angleEncoder.getConfigurator().apply(
+            ctreConfigs.swerveCanCoderConfig);
   }
 
   private void configAngleMotor() {
@@ -116,6 +125,9 @@ public class SwerveModule implements Loggable {
     mAngleMotor.setInverted(kAngleMotorInvert);
     mAngleMotor.setNeutralMode(kAngleNeutralMode);
     resetToAbsolute();
+
+    mAngleMotor.getConfigurator().apply(
+            ctreConfigs.swerveAngleFXConfig);
   }
 
   private void configDriveMotor() {
