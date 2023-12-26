@@ -10,7 +10,9 @@ package frc.robot.swerve.helpers;
 import static frc.robot.Constants.ShuffleboardConstants.kElectricalTabName;
 import static frc.robot.swerve.helpers.SwerveModuleConstants.*;
 import static frc.robot.swerve.SwerveConstants.*;
+import frc.robot.swerve.helpers.CTREConfigs;
 
+import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.controls.DutyCycleOut;
@@ -166,12 +168,12 @@ public class SwerveModule implements Loggable {
     lastAngle = angle;
   }
 // TODO: see CTREConfigs? for neutral and invert implementations
-  public void setDriveMotorNeutralMode(NeutralModeValue neutralMode) {
-    mDriveMotor.setControl(kDriveNeutralMode);
+  public void setDriveMotorNeutralMode() {
+    mDriveMotor.disable();
   }
 
-  public void setAngleMotorNeutralMode(NeutralMode neutralMode) {
-    mAngleMotor.setControl(neutralMode);
+  public void setAngleMotorNeutralMode() {
+    mAngleMotor.disable();
   }
 
   public TalonFX getAngleMotor() {

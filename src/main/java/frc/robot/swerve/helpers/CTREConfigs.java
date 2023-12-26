@@ -51,7 +51,7 @@ public final class CTREConfigs {
     //swerveAngleFXConfig.supplyCurrLimit = angleSupplyLimit;
 
     /* Swerve Drive Motor Configuration */
-    var driveMotorOutput = swerveDriveFXConfig.MotorOutput;
+    MotorOutputConfigs driveMotorOutput = swerveDriveFXConfig.MotorOutput;
     driveMotorOutput.Inverted = kDriveMotorInvert;
     driveMotorOutput.NeutralMode = kDriveNeutralMode;
 
@@ -87,8 +87,6 @@ public final class CTREConfigs {
 
     /* Swerve CANCoder Configuration */
 
-//    swerveCanCoderConfig.initializationStrategy =
-//            SensorInitializationStrategy.BootToAbsolutePosition;
 //    swerveCanCoderConfig.sensorTimeBase = SensorTimeBase.PerSecond;
 
     swerveCanCoderConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1;

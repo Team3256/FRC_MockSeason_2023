@@ -15,6 +15,7 @@ import static frc.robot.simulation.SimulationConstants.*;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -119,7 +120,7 @@ public class Arm extends SubsystemBase implements CANTestable, Loggable {
 
   /**
    * Reset encoder offset. Use when you know where the arm actually is in space but the relative
-   * encoder is off. Useful when the gear skips and you need to change the offset
+   * encoder is off. Useful when the gear skips necessitating a change of the offset
    *
    * @param currentAbsolutePosition The actual position of the arm in space that you want the
    *     current relative encoder value to reflect. This will change all setpoint for the arm.
