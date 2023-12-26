@@ -48,8 +48,10 @@ public class SwerveModule implements Loggable {
   private CANcoder angleEncoder;
   private TalonFX mAngleMotor;
   private TalonFX mDriveMotor;
-
   private CTREConfigs ctreConfigs = new CTREConfigs();
+  private final DutyCycleOut driveDutyCycle = new DutyCycleOut(0);
+  private final VelocityVoltage driveVelocity = new VelocityVoltage(0);
+  private final PositionVoltage anglePosition = new PositionVoltage(0);
 
   SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(kDriveKS, kDriveKV, kDriveKA);
 
@@ -84,13 +86,13 @@ public class SwerveModule implements Loggable {
 
   private void setSpeed(SwerveModuleState desiredState, boolean isOpenLoop) {
     if (isOpenLoop) {
-      double percentOutput = desiredState.speedMetersPerSecond / kMaxSpeed;
-      mDriveMotor.set(percentOutput);
+      driveDutyCycle.Output = desiredState.speedMetersPerSecond / kMaxSpeed;
+      mDriveMotor.setControl(driveDutyCycle);
     } else {
       double velocity =
               Conversions.MPSToFalcon(
                       desiredState.speedMetersPerSecond, kWheelCircumference, kDriveGearRatio);
-      mDriveMotor.set(velocity);
+      mDriveMotor.setControl(driveVelocity);
     }
   }
 
@@ -100,7 +102,7 @@ public class SwerveModule implements Loggable {
                     ? lastAngle
                     : desiredState
                     .angle; // Prevent rotating module if speed is less than 1%. Prevents Jittering.
-    mAngleMotor.set(Conversions.degreesToFalcon(angle.getDegrees(), kAngleGearRatio));
+    mAngleMotor.setControl(anglePosition);
     lastAngle = angle;
   }
 
@@ -110,7 +112,7 @@ public class SwerveModule implements Loggable {
   }
 
   public Rotation2d getCanCoder() {
-    return Rotation2d.fromDegrees(
+    return Rotation2d.fromRotations(
             angleEncoder.getAbsolutePosition().getValue());
   }
 
@@ -127,35 +129,26 @@ public class SwerveModule implements Loggable {
   }
 
   private void configAngleMotor() {
-    mAngleMotor.configFactoryDefault();
-    mAngleMotor.configAllSettings(ctreConfigs.swerveAngleFXConfig);
-    mAngleMotor.setInverted(kAngleMotorInvert);
-    mAngleMotor.setNeutralMode(kAngleNeutralMode);
+    mAngleMotor.getConfigurator().apply(ctreConfigs.swerveAngleFXConfig);
     resetToAbsolute();
-
-    mAngleMotor.getConfigurator().apply(
-            ctreConfigs.swerveAngleFXConfig);
   }
 
   private void configDriveMotor() {
-    mDriveMotor.configFactoryDefault();
-    mDriveMotor.configAllSettings(ctreConfigs.swerveDriveFXConfig);
-    mDriveMotor.setInverted(kDriveMotorInvert);
-    mDriveMotor.setNeutralMode(kDriveNeutralMode);
-    mDriveMotor.setSelectedSensorPosition(0);
+    mDriveMotor.getConfigurator().apply(ctreConfigs.swerveDriveFXConfig);
+    mDriveMotor.getConfigurator().setRotorPosition(0);
   }
 
   public SwerveModuleState getState() {
     return new SwerveModuleState(
             Conversions.falconToMPS(
-                    mDriveMotor.getSelectedSensorVelocity(), kWheelCircumference, kDriveGearRatio),
+                    mDriveMotor.getVelocity().getValue(), kWheelCircumference, kDriveGearRatio),
             getAngle());
   }
 
-  public SwerveModulePosition getPosition() {
-    return new SwerveModulePosition(
+  public SwerveModuleState getPosition() {
+    return new SwerveModuleState(
             Conversions.falconToMeters(
-                    mDriveMotor.getSelectedSensorPosition(), kWheelCircumference, kDriveGearRatio),
+                    mDriveMotor.getVelocity().getValue(), kWheelCircumference, kDriveGearRatio),
             getAngle());
   }
 
@@ -180,15 +173,15 @@ public class SwerveModule implements Loggable {
     mAngleMotor.setNeutralMode(neutralMode);
   }
 
-  public WPI_TalonFX getAngleMotor() {
+  public TalonFX getAngleMotor() {
     return mAngleMotor;
   }
 
-  public WPI_TalonFX getDriveMotor() {
+  public TalonFX getDriveMotor() {
     return mDriveMotor;
   }
 
-  public WPI_CANCoder getAngleEncoder() {
+  public CANcoder getAngleEncoder() {
     return angleEncoder;
   }
 

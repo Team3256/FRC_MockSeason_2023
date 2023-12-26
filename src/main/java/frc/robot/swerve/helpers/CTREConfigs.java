@@ -97,6 +97,6 @@ public final class CTREConfigs {
 //    swerveCanCoderConfig.sensorTimeBase = SensorTimeBase.PerSecond;
 
     //TODO: fix encoder inverse direction code
-    swerveCanCoderConfig.MagnetSensor.SensorDirection = SwerveConstants.kCanCoderInvert;
+    swerveCanCoderConfig.MagnetSensor.SensorDirection = kCanCoderInvert;
   }
 }
