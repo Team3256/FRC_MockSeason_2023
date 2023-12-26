@@ -9,8 +9,8 @@ package frc.robot.swerve;
 
 import static frc.robot.Constants.*;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -140,8 +140,8 @@ public final class SwerveConstants {
   public static final double kMaxAngularVelocity = 2 * Math.PI;
 
   /* Neutral Modes */
-  public static final NeutralMode kAngleNeutralMode = NeutralMode.Coast;
-  public static final NeutralMode kDriveNeutralMode = NeutralMode.Brake;
+  public static final NeutralModeValue kAngleNeutralMode = NeutralModeValue.Coast;
+  public static final NeutralModeValue kDriveNeutralMode = NeutralModeValue.Brake;
   public static final boolean kInvertGyroYaw = false; // Always ensure Gyro is CCW+ CW-
 
   /* PID Constants Trapezoid Profile for the Azimuth Control */

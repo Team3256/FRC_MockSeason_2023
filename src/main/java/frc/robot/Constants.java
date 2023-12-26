@@ -12,6 +12,7 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import java.util.Map;
 
@@ -26,6 +27,7 @@ public final class Constants {
 
   public static final boolean kAdvantageKitReplayEnabled = false;
   public static final boolean kCompetitionModeEnabled = true;
+  public static final RobotType kRobotType = RobotType.ALPHA;
   public static final RobotMode kCurrentMode = RobotMode.SIM;
 
   public static final double kStickDeadband = 0.05;

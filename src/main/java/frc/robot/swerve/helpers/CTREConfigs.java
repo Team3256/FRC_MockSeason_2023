@@ -10,6 +10,7 @@ package frc.robot.swerve.helpers;
 import static frc.robot.swerve.SwerveConstants.*;
 
 import com.ctre.phoenix6.configs.*;
+import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 import frc.robot.swerve.SwerveConstants;
 
 public final class CTREConfigs {
@@ -25,9 +26,8 @@ public final class CTREConfigs {
     /* Swerve Angle Motor Configurations */
     MotorOutputConfigs angleMotorOutput =
             swerveAngleFXConfig.MotorOutput;
-    //angleMotorOutput.Inverted = SwerveConstants...
-    //TODO: add constant that inverts motion of the angle motor
-    //angleMotorOutput.Neutral = SwerveConstants...
+    angleMotorOutput.Inverted = kAngleMotorInvert;
+    angleMotorOutput.NeutralMode = kAngleNeutralMode;
 
     /* Current Limiting */
     CurrentLimitsConfigs angleCurrentLimitConfig =
@@ -84,9 +84,10 @@ public final class CTREConfigs {
     swerveDriveFXConfig.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod =
             kClosedLoopRamp;
 
-    /*TODO: implement voltage open/closed ramp period
-    * swerveDriveFXConfig.VoltageOpenLoopRampPeriod = ?? constant
-    * */
+    swerveDriveFXConfig.VoltageOpenLoopRampPeriod =
+            kOpenLoopRamp;
+    swerveDriveFXConfig.VoltageOpenLoopRampPeriod =
+            kClosedLoopRamp;
 
 //
 //    /* Swerve CANCoder Configuration */
@@ -96,7 +97,8 @@ public final class CTREConfigs {
 //            SensorInitializationStrategy.BootToAbsolutePosition;
 //    swerveCanCoderConfig.sensorTimeBase = SensorTimeBase.PerSecond;
 
-    //TODO: fix encoder inverse direction code
+    //TODO
+    swerveCanCoderConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1;
     swerveCanCoderConfig.MagnetSensor.SensorDirection = kCanCoderInvert;
   }
 }

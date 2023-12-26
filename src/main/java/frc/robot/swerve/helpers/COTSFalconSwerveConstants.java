@@ -10,6 +10,7 @@ package frc.robot.swerve.helpers;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import edu.wpi.first.math.util.Units;
+import frc.robot.swerve.SwerveConstants;
 
 /* Contains values and required settings for common COTS swerve modules. */
 public class COTSFalconSwerveConstants {
@@ -44,7 +45,7 @@ public class COTSFalconSwerveConstants {
     this.angleKI = angleKI;
     this.angleKD = angleKD;
     this.angleKF = angleKF;
-    this.driveMotorInvert = driveMotorInvert;
+    this.driveMotorInvert = ;
     this.angleMotorInvert = angleMotorInvert;
     this.canCoderInvert = canCoderInvert;
   }
