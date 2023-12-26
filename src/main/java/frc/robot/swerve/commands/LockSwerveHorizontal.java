@@ -9,7 +9,6 @@ package frc.robot.swerve.commands;
 
 import static frc.robot.swerve.SwerveConstants.*;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.robot.helpers.DebugCommandBase;
@@ -35,8 +34,8 @@ public class LockSwerveHorizontal extends DebugCommandBase {
     }
 
     swerveSubsystem.setDesiredAngleState(states);
-    swerveSubsystem.setDriveMotorsNeutralMode(NeutralMode.Brake);
-    swerveSubsystem.setAngleMotorsNeutralMode(NeutralMode.Brake);
+    swerveSubsystem.setDriveMotorsNeutralMode(kDriveNeutralMode);
+    swerveSubsystem.setAngleMotorsNeutralMode(kDriveNeutralMode);
   }
 
   @Override

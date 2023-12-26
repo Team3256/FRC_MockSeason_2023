@@ -46,15 +46,14 @@ public final class CTREConfigs {
     angleSlot0.kP = kAngleKP;
     angleSlot0.kI = kAngleKI;
     angleSlot0.kD = kAngleKD;
-    //TODO: implement feed forward
-    // angleSlot0.kF = kAngleKF;
+    //angleSlot0.kF = kAngleKF;
 
     //swerveAngleFXConfig.supplyCurrLimit = angleSupplyLimit;
 
     /* Swerve Drive Motor Configuration */
     var driveMotorOutput = swerveDriveFXConfig.MotorOutput;
-    //TODO: implement invert and neutral,
-    // refer to angleMotorOutput above
+    driveMotorOutput.Inverted = kDriveMotorInvert;
+    driveMotorOutput.NeutralMode = kDriveNeutralMode;
 
     /* Current Limiting */
     var driveCurrentLimits = swerveDriveFXConfig.CurrentLimits;
@@ -72,32 +71,26 @@ public final class CTREConfigs {
     driveSlot0.kP = kDriveKP;
     driveSlot0.kI = kDriveKI;
     driveSlot0.kD = kDriveKD;
+    //driveSlot0.kF = kDriveKF;
 
-    /*TODO: implement feed forward constant
-    * driveSlot0.kF = kDriveKF;
-    * */
-
-    //swerveDriveFXConfig.supplyCurrLimit = driveSupplyLimit;
+    //swerveDriveFXConfig.supplyCurrentLimit = driveSupplyLimit;
 
     swerveDriveFXConfig.OpenLoopRamps.DutyCycleOpenLoopRampPeriod =
             kOpenLoopRamp;
     swerveDriveFXConfig.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod =
             kClosedLoopRamp;
 
-    swerveDriveFXConfig.VoltageOpenLoopRampPeriod =
+    swerveDriveFXConfig.OpenLoopRamps.VoltageOpenLoopRampPeriod =
             kOpenLoopRamp;
-    swerveDriveFXConfig.VoltageOpenLoopRampPeriod =
+    swerveDriveFXConfig.ClosedLoopRamps.VoltageClosedLoopRampPeriod =
             kClosedLoopRamp;
 
-//
-//    /* Swerve CANCoder Configuration */
-//    swerveCanCoderConfig.absoluteSensorRange = AbsoluteSensorRange.Unsigned_0_to_360;
-//    swerveCanCoderConfig.sensorDirection = kCanCoderInvert;
+    /* Swerve CANCoder Configuration */
+
 //    swerveCanCoderConfig.initializationStrategy =
 //            SensorInitializationStrategy.BootToAbsolutePosition;
 //    swerveCanCoderConfig.sensorTimeBase = SensorTimeBase.PerSecond;
 
-    //TODO
     swerveCanCoderConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1;
     swerveCanCoderConfig.MagnetSensor.SensorDirection = kCanCoderInvert;
   }

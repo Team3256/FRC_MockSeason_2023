@@ -34,8 +34,8 @@ public class LockSwerveX extends DebugCommandBase {
     }
 
     swerveSubsystem.setDesiredAngleState(states);
-    swerveSubsystem.setDriveMotorsNeutralMode(NeutralMode.Brake);
-    swerveSubsystem.setAngleMotorsNeutralMode(NeutralMode.Brake);
+    swerveSubsystem.setDriveMotorsNeutralMode(kDriveNeutralMode);
+    swerveSubsystem.setAngleMotorsNeutralMode(kAngleNeutralMode);
   }
 
   @Override

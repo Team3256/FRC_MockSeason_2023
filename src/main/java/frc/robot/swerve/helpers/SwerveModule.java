@@ -25,6 +25,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.WPI_CANCoder;
 */
 
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -164,13 +165,13 @@ public class SwerveModule implements Loggable {
             ControlMode.Position, Conversions.degreesToFalcon(angle.getDegrees(), kAngleGearRatio));
     lastAngle = angle;
   }
-
-  public void setDriveMotorNeutralMode(NeutralMode neutralMode) {
-    mDriveMotor.setNeutralMode(neutralMode);
+// TODO: see CTREConfigs? for neutral and invert implementations
+  public void setDriveMotorNeutralMode(NeutralModeValue neutralMode) {
+    mDriveMotor.setControl(kDriveNeutralMode);
   }
 
   public void setAngleMotorNeutralMode(NeutralMode neutralMode) {
-    mAngleMotor.setNeutralMode(neutralMode);
+    mAngleMotor.setControl(neutralMode);
   }
 
   public TalonFX getAngleMotor() {
