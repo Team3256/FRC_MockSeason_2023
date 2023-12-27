@@ -8,39 +8,23 @@
 package frc.robot.swerve.helpers;
 
 import static frc.robot.Constants.ShuffleboardConstants.kElectricalTabName;
-import static frc.robot.swerve.helpers.SwerveModuleConstants.*;
 import static frc.robot.swerve.SwerveConstants.*;
-import frc.robot.swerve.helpers.CTREConfigs;
 
-import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.hardware.core.CoreTalonFX;
+import com.ctre.phoenix6.hardware.core.CoreTalonFX.*;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 
-/*
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.ctre.phoenix.sensors.WPI_CANCoder;
-*/
-
-import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-//import frc.robot.swerve.helpers.Conversions;
-//import frc.robot.swerve.helpers.CTREModuleState;
-//import frc.robot.swerve.helpers.SwerveModuleConstants;
-
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Robot;
 import frc.robot.drivers.CANDeviceTester;
 import frc.robot.logging.Loggable;
 
@@ -157,17 +141,15 @@ public class SwerveModule implements Loggable {
 
   public void setDesiredAngleState(SwerveModuleState desiredState) {
     desiredState = CTREModuleState.optimize(desiredState, getPosition().angle);
-
-    Rotation2d angle =
-            (Math.abs(desiredState.speedMetersPerSecond) <= (kMaxSpeed * 0.01))
-                    ? lastAngle
-                    : desiredState.angle;
-
-    mAngleMotor.set(
-            ControlMode.Position, Conversions.degreesToFalcon(angle.getDegrees(), kAngleGearRatio));
+    Rotation2d angle = (
+            Math.abs(desiredState.speedMetersPerSecond) <= (kMaxSpeed * 0.01))
+            ? lastAngle
+            : desiredState.angle;
+    //TODO: possible problem, set method takes the double param as speed
+    mAngleMotor.set(Conversions.degreesToFalcon(angle.getDegrees(), kAngleGearRatio));
     lastAngle = angle;
   }
-// TODO: see CTREConfigs? for neutral and invert implementations
+
   public void setDriveMotorNeutralMode() {
     mDriveMotor.disable();
   }
@@ -190,12 +172,18 @@ public class SwerveModule implements Loggable {
 
   @Override
   public void logInit() {
-    getLayout(kElectricalTabName).add("Turn Motor Bus Voltage", getAngleMotor().getBusVoltage());
     getLayout(kElectricalTabName)
-            .add("Turn Motor Output Voltage", getAngleMotor().getMotorOutputVoltage());
-    getLayout(kElectricalTabName).add("Drive Motor Bus Voltage", getDriveMotor().getBusVoltage());
+            .add("Turn Motor Bus Voltage",
+                    getAngleMotor().getSupplyVoltage());
     getLayout(kElectricalTabName)
-            .add("Drive Motor Output Voltage", getDriveMotor().getMotorOutputVoltage());
+            .add("Turn Motor Output Voltage",
+                    getAngleMotor().getMotorVoltage);
+    getLayout(kElectricalTabName)
+            .add("Drive Motor Bus Voltage",
+                    getDriveMotor().getSupplyVoltage());
+    getLayout(kElectricalTabName)
+            .add("Drive Motor Output Voltage",
+                    getDriveMotor().getMotorVoltage());
   }
 
   @Override

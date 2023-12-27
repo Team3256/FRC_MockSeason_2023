@@ -14,6 +14,7 @@ import static frc.robot.swerve.SwerveConstants.*;
 
 //import com.ctre.phoenix.motorcontrol.NeutralMode;
 //import com.ctre.phoenix.sensors.Pigeon2;
+import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.MatBuilder;
 import edu.wpi.first.math.MathUtil;
@@ -110,7 +111,7 @@ public class SwerveDrive extends SubsystemBase implements Loggable, CANTestable 
                 new SwerveDrivePoseEstimator(
                         kSwerveKinematics,
                         getYaw(),
-                        new SwerveModulePosition[] {
+                        new SwerveModulePosition[][] {
                                 frontLeftModule.getPosition(),
                                 frontRightModule.getPosition(),
                                 backLeftModule.getPosition(),
@@ -375,13 +376,13 @@ public class SwerveDrive extends SubsystemBase implements Loggable, CANTestable 
 
     public void setDriveMotorsNeutralMode(NeutralModeValue neutralMode) {
         for (SwerveModule swerveModule : swerveModules) {
-            swerveModule.setDriveMotorNeutralMode(neutralMode);
+            swerveModule.setDriveMotorNeutralMode();
         }
     }
 
     public void setAngleMotorsNeutralMode(NeutralModeValue neutralMode) {
         for (SwerveModule swerveModule : swerveModules) {
-            swerveModule.setAngleMotorNeutralMode(neutralMode);
+            swerveModule.setAngleMotorNeutralMode();
         }
     }
 
