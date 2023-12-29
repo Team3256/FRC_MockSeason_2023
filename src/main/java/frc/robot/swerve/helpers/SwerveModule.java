@@ -177,7 +177,7 @@ public class SwerveModule implements Loggable {
                     getAngleMotor().getSupplyVoltage());
     getLayout(kElectricalTabName)
             .add("Turn Motor Output Voltage",
-                    getAngleMotor().getMotorVoltage);
+                    getAngleMotor().getMotorVoltage());
     getLayout(kElectricalTabName)
             .add("Drive Motor Bus Voltage",
                     getDriveMotor().getSupplyVoltage());
