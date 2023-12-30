@@ -117,8 +117,7 @@ public class SwerveDrive extends SubsystemBase implements Loggable, CANTestable 
                                 frontLeftModule.getPosition(),
                                 frontRightModule.getPosition(),
                                 backLeftModule.getPosition(),
-                                backRightModule.getPosition()
-                        },
+                                backRightModule.getPosition()},
                         new Pose2d(),
                         new MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.5, 0.5, 0.02), // Current state X, Y, theta.
                         new MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.10, 0.10, 0.5));
