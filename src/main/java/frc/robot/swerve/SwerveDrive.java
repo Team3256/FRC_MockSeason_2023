@@ -12,10 +12,10 @@ import static frc.robot.Constants.VisionConstants.*;
 import static frc.robot.Constants.kDebugEnabled;
 import static frc.robot.swerve.SwerveConstants.*;
 
-//import com.ctre.phoenix.motorcontrol.NeutralMode;
-//import com.ctre.phoenix.sensors.Pigeon2;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+
+import edu.wpi.first.cscore.CameraServerJNI.LoggerFunction;
 import edu.wpi.first.math.MatBuilder;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.Nat;
@@ -37,6 +37,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 import frc.robot.Constants.FeatureFlags;
 import frc.robot.drivers.CANDeviceTester;
 import frc.robot.drivers.CANTestable;
@@ -46,6 +47,7 @@ import frc.robot.logging.DoubleSendable;
 import frc.robot.logging.Loggable;
 import frc.robot.swerve.helpers.AdaptiveSlewRateLimiter;
 import frc.robot.swerve.helpers.SwerveModule;
+
 import java.util.ArrayList;
 import java.util.List;
 //import org.apache.commons.math3.analysis.interpolation.LinearInterpolator;
@@ -308,7 +310,7 @@ public class SwerveDrive extends SubsystemBase implements Loggable, CANTestable 
     public void periodic() {
         poseEstimator.update(getYaw(), getModulePositions());
         SmartDashboard.putNumber("Gyro Angle", getYaw().getDegrees());
-        SmartDashboard.putNumber("Gyro Pitch", gyro.getPitch());
+        SmartDashboard.putNumber("Gyro Pitch", gyro.getPitch().getValueAsDouble());
         SmartDashboard.putNumber("Pose X", poseEstimator.getEstimatedPosition().getX());
         SmartDashboard.putNumber("Pose Y", poseEstimator.getEstimatedPosition().getY());
         field.setRobotPose(poseEstimator.getEstimatedPosition());

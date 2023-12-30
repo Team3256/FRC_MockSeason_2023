@@ -7,16 +7,19 @@
 
 package frc.robot.drivers;
 
-import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+//import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+//import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.hardware.TalonFX;
 
 /**
  * This class is a thin wrapper around the CANTalon that reduces CAN bus / CPU overhead by skipping
  * duplicate set commands. (By default the Talon flushes the Tx buffer on every set call).
  */
-public class LazyTalonFX extends WPI_TalonFX {
+public class LazyTalonFX extends TalonFX{
   protected double mLastSet = Double.NaN;
-  protected TalonFXControlMode mLastControlMode = null;
+  protected TalonFXConfiguration mLastControlMode = null;
 
   public LazyTalonFX(CanDeviceId id) {
     super(id.getDeviceNumber(), id.getBus());
@@ -27,7 +30,7 @@ public class LazyTalonFX extends WPI_TalonFX {
   }
 
   @Override
-  public void set(TalonFXControlMode mode, double value) {
+  public void set(TalonFXConfiguration mode, double value) {
     if (value != mLastSet || mode != mLastControlMode) {
       mLastSet = value;
       mLastControlMode = mode;

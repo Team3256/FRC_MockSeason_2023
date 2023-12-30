@@ -11,8 +11,6 @@ import static frc.robot.Constants.ShuffleboardConstants.kElectricalTabName;
 import static frc.robot.swerve.SwerveConstants.*;
 
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.hardware.core.CoreTalonFX;
-import com.ctre.phoenix6.hardware.core.CoreTalonFX.*;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
@@ -76,9 +74,8 @@ public class SwerveModule implements Loggable {
       driveDutyCycle.Output = desiredState.speedMetersPerSecond / kMaxSpeed;
       mDriveMotor.setControl(driveDutyCycle);
     } else {
-      double velocity =
-              Conversions.MPSToFalcon(
-                      desiredState.speedMetersPerSecond, kWheelCircumference, kDriveGearRatio);
+      /*double velocity = Conversions.MPSToFalcon(
+        desiredState.speedMetersPerSecond, kWheelCircumference, kDriveGearRatio);*/
       mDriveMotor.setControl(driveVelocity);
     }
   }
@@ -107,7 +104,7 @@ public class SwerveModule implements Loggable {
     double absolutePosition =
             Conversions.degreesToFalcon(
                     getCanCoder().getDegrees() - angleOffset.getDegrees(), kAngleGearRatio);
-    mAngleMotor.setRotorPosition(absolutePosition);
+    mAngleMotor.setPosition(absolutePosition);
   }
 
   private void configAngleEncoder() {
@@ -122,7 +119,7 @@ public class SwerveModule implements Loggable {
 
   private void configDriveMotor() {
     mDriveMotor.getConfigurator().apply(ctreConfigs.swerveDriveFXConfig);
-    mDriveMotor.getConfigurator().setRotorPosition(0);
+    mDriveMotor.getConfigurator().setPosition(0);
   }
 
   public SwerveModuleState getState() {

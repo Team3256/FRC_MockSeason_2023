@@ -75,11 +75,11 @@ public class RobotSimulation {
           .getLigament()
           .append(
               new MechanismLigament2d(
-                  "Elevator Right",
-                  Units.inchesToMeters(6),
-                  0,
-                  kElevatorLineWidth,
-                  new Color8Bit(Color.kRed)));
+                "Elevator Right", 
+                Units.inchesToMeters(6), 
+                0, 
+                kElevatorLineWidth, 
+                new Color8Bit(Color.kRed)));
       elevatorSubsystem.getLigament().append(armPivot);
     }
 

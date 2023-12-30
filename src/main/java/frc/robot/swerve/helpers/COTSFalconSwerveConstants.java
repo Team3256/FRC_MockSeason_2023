@@ -10,7 +10,6 @@ package frc.robot.swerve.helpers;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import edu.wpi.first.math.util.Units;
-import frc.robot.swerve.SwerveConstants.*;
 
 import static frc.robot.swerve.SwerveConstants.*;
 

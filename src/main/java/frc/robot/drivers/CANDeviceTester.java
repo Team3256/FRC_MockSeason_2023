@@ -14,7 +14,7 @@ import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.hardware.Pigeon2;
-//import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj.PowerDistribution;
 
 public class CANDeviceTester {

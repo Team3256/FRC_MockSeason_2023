@@ -11,7 +11,6 @@ import static frc.robot.swerve.SwerveConstants.*;
 
 import com.ctre.phoenix6.configs.*;
 import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
-import frc.robot.swerve.SwerveConstants;
 
 public final class CTREConfigs {
   public TalonFXConfiguration swerveAngleFXConfig;
