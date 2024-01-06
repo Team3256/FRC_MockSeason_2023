@@ -15,7 +15,7 @@ import static frc.robot.swerve.SwerveConstants.*;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
-import edu.wpi.first.cscore.CameraServerJNI.LoggerFunction;
+//import edu.wpi.first.cscore.CameraServerJNI.LoggerFunction;
 import edu.wpi.first.math.MatBuilder;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.Nat;
